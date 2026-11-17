@@ -1,0 +1,11 @@
+name: tiny-voca-voice
+version: 1.0.0
+description: Self-hosted English TTS for Hermes agents with two named voices and hash-chained receipts.
+author: Yæl Méndez (@yaelmendez)
+license: Apache-2.0
+provides_tools:
+  - tts_speak
+  - tts_voices
+  - tts_receipts
+  - tts_verify
+provides_hooks: []

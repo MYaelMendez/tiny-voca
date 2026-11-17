@@ -1,0 +1,127 @@
+"""tiny-voca-voice 1.0.0 — self-hosted English TTS for Hermes agents.
+
+The plugin registers four light tools and delegates synthesis/verification to
+portable scripts. All paths resolve from $HERMES_HOME; no machine-local roots.
+The CLI writes the canonical hash-chained TTS://SPEAK receipt.
+"""
+import json, os, shutil, subprocess, sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent
+SCRIPTS = ROOT / "scripts"
+CLI = SCRIPTS / "tiny_voca_voice.py"
+VERIFY = SCRIPTS / "tiny_voca_verify.py"
+PY = os.environ.get("HERMES_TINY_VOCA_PYTHON") or shutil.which("python3") or sys.executable
+HERMES_HOME = Path(os.environ.get("HERMES_HOME", Path.home() / ".hermes"))
+LEDGER = Path(os.environ.get("HERMES_TINY_VOCA_LEDGER", HERMES_HOME / "tiny-voca-receipts.jsonl"))
+MODEL_SHA256 = "fe6d918791a15b82e37465981d7f27a070e46b46635e5a3482fc8dff87a1ae46"
+
+VOICES = [
+    {"id": "F2", "name": "nous-girl", "aliases": ["F2", "f2", "nous-girl", "nous_girl", "nous girl"],
+     "language": "en-US", "sample_rate": 24000},
+    {"id": "M2", "name": "hermes-agent", "aliases": ["M2", "m2", "hermes-agent", "hermes_agent", "hermes agent"],
+     "language": "en-US", "sample_rate": 24000},
+]
+
+
+def _out(obj):
+    return json.dumps(obj, ensure_ascii=False)
+
+
+def _parse_json(stdout):
+    raw = (stdout or "").strip()
+    if not raw:
+        return {"success": False, "error": "empty output from tiny-voca script"}
+    for candidate in (raw, raw.splitlines()[-1]):
+        try:
+            obj = json.loads(candidate)
+            if isinstance(obj, dict):
+                return obj
+        except Exception:
+            pass
+    return {"success": False, "error": "tiny-voca script did not emit JSON", "stdout": raw[-500:]}
+
+
+def _run(script, args):
+    if not script.exists():
+        return {"success": False, "error": f"script missing: {script}"}
+    try:
+        p = subprocess.run([PY, str(script)] + list(args), capture_output=True,
+                           text=True, timeout=300)
+        result = _parse_json(p.stdout)
+        if p.returncode != 0 and result.get("success", False):
+            result["success"] = False
+        if p.returncode != 0 and not result.get("error"):
+            result["error"] = (p.stderr or "tiny-voca script failed")[-500:]
+        return result
+    except Exception as exc:
+        return {"success": False, "error": f"{type(exc).__name__}: {exc}"}
+
+
+def register(ctx):
+    def tts_speak(args: dict) -> str:
+        text = args.get("text", "")
+        if not text and args.get("text_file"):
+            text = str(Path(args["text_file"]).read_text(encoding="utf-8"))
+        if not text:
+            return _out({"success": False, "error": "text or text_file is required"})
+        output = args.get("output") or str(HERMES_HOME / "tiny-voca-out.wav")
+        cmd = ["--text", text, "--voice", str(args.get("voice", "M2")),
+               "--output", str(output), "--speed", str(args.get("speed", 1.0)),
+               "--pitch-shift", str(args.get("pitch_shift", 0.0)),
+               "--pitch-range", str(args.get("pitch_range", 1.0))]
+        return _out(_run(CLI, cmd))
+
+    def tts_voices(args: dict) -> str:
+        runtime = HERMES_HOME / "tiny-voca"
+        model = runtime / "onnx" / "model.onnx"
+        return _out({"success": True, "authority": "HUMAN://ROOT",
+                     "voices": VOICES, "model": "tiny-voca",
+                     "parameters": 4537291, "sample_rate": 24000,
+                     "backend": "ONNX Runtime CPU",
+                     "runtime": str(runtime), "model_present": model.exists(),
+                     "model_sha256_expected": MODEL_SHA256})
+
+    def tts_receipts(args: dict) -> str:
+        limit = int(args.get("limit") or 10)
+        lines = LEDGER.read_text(encoding="utf-8").splitlines() if LEDGER.exists() else []
+        receipts = []
+        for line in lines[-limit:]:
+            try:
+                receipts.append(json.loads(line))
+            except Exception:
+                continue
+        return _out({"success": True, "authority": "HUMAN://ROOT",
+                     "count": len(lines), "receipts": receipts})
+
+    def tts_verify(args: dict) -> str:
+        return _out(_run(VERIFY, []))
+
+    ctx.register_tool(
+        name="tts_speak", toolset="tiny-voca-voice", handler=tts_speak,
+        schema={"type": "object", "properties": {
+            "text": {"type": "string", "description": "English text to synthesize."},
+            "text_file": {"type": "string", "description": "UTF-8 file containing text."},
+            "voice": {"type": "string", "description": "F2/nous-girl or M2/hermes-agent; aliases accepted."},
+            "output": {"type": "string", "description": "Output .wav path."},
+            "speed": {"type": "number"}, "pitch_shift": {"type": "number"},
+            "pitch_range": {"type": "number"},
+        }, "required": []},
+    )
+    ctx.register_tool(
+        name="tts_voices", toolset="tiny-voca-voice", handler=tts_voices,
+        schema={"type": "object", "properties": {}},
+    )
+    ctx.register_tool(
+        name="tts_receipts", toolset="tiny-voca-voice", handler=tts_receipts,
+        schema={"type": "object", "properties": {
+            "limit": {"type": "integer", "description": "Recent receipts to return. Default 10."}}},
+    )
+    ctx.register_tool(
+        name="tts_verify", toolset="tiny-voca-voice", handler=tts_verify,
+        schema={"type": "object", "properties": {}},
+    )
+
+    skill = ROOT / "skills" / "tiny-voca-voice" / "SKILL.md"
+    if skill.exists():
+        ctx.register_skill("tiny-voca-voice", skill)
