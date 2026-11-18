@@ -3,6 +3,8 @@ version: 1.2.0
 description: Self-hosted English TTS with voice identity, hash-chained receipts, and narrated Asimov stick lessons.
 author: Yæl Méndez (@yaelmendez)
 license: Apache-2.0
+requires_hermes: ">=0.22.2"
+tags: [tts, voice, desktop, receipts, local]
 provides_tools:
   - tts_speak
   - tts_voices

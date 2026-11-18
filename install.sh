@@ -17,6 +17,7 @@ mkdir -p "$TARGET"
 # Copy the plugin payload. The existence guard keeps the installer usable in a
 # docs-only checkout; when the full plugin is present, every item is copied.
 for item in plugin.yaml identity.json __init__.py scripts skills docs assets \
+            desktop dashboard package.json \
             README.md CHANGELOG.md NOTICE.md LICENSE; do
     if [ -e "$SCRIPT_DIR/$item" ]; then
         cp -R "$SCRIPT_DIR/$item" "$TARGET/"

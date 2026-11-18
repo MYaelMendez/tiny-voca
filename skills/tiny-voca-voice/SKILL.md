@@ -37,7 +37,8 @@ It does not train voices, clone voices, stream audio, or read non-English text.
   The file `onnx/model.onnx` must match SHA-256
   `fe6d918791a15b82e37465981d7f27a070e46b46635e5a3482fc8dff87a1ae46`.
 - The plugin installed at `$HERMES_HOME/plugins/tiny-voca-voice`:
-  `terminal(command="sh install.sh")` from the repo root.
+  `terminal(command="sh install.sh")` from the repo root. The unified package
+  also ships `desktop/plugin.js` and `dashboard/plugin_api.py` for Hermes Desktop.
 - Hermes tools: `terminal` for scripts, `write_file` and `read_file` for text,
   `search_files` for plugin assets, `browser_exec` for page QA when available.
 
@@ -67,6 +68,8 @@ environment-based; never hardcode a machine-local directory.
 - `tts_stick_lesson({op:"list"})` — list the three Asimov lessons.
 - `tts_stick_lesson({op:"build", lesson:"all", out:"..."})` — build the page,
   copy the unchanged upstream runtime, synthesize narration, and receipt it.
+- Desktop dock: `desktop/plugin.js` + `dashboard/plugin_api.py`; enable
+  **tinyVOCA Voice Dock** in Capabilities → Plugins, then use the right pane.
 - Lesson IDs: `asimov-authority`, `asimov-verbs`, `asimov-twin`, `all`.
 - Default narration speed: `1.25`.
 

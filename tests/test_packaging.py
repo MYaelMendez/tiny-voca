@@ -39,6 +39,14 @@ class PackagingTest(unittest.TestCase):
         install = (ROOT / "install.sh").read_text(encoding="utf-8")
         self.assertIn("identity.json", install)
 
+    def test_desktop_dock_is_shipped(self):
+        for rel in ("desktop/plugin.js", "dashboard/manifest.json",
+                    "dashboard/plugin_api.py", "package.json"):
+            self.assertTrue((ROOT / rel).exists(), f"missing desktop asset {rel}")
+        install = (ROOT / "install.sh").read_text(encoding="utf-8")
+        self.assertIn("desktop dashboard package.json", install)
+        self.assertIn("requires_hermes", (ROOT / "plugin.yaml").read_text(encoding="utf-8"))
+
     def test_stick_lesson_assets_and_skill(self):
         assets = ROOT / "assets" / "stick-scene"
         for rel in ("stick.js", "LICENSE", "scenes/asimov-authority.js",

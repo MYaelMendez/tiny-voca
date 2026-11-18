@@ -8,6 +8,12 @@ All notable changes to `tiny-voca-voice` are documented here. Format follows
 
 ### Added
 
+- Unified Hermes Desktop half: `desktop/plugin.js` docks a tinyVOCA pane beside
+  the conversation with a statusbar chip and palette command.
+- Scoped backend `dashboard/plugin_api.py` with `/status`, `/identity`, and
+  `/speak` routes under `/api/plugins/tiny-voca-voice/`.
+- Node check/test scripts and packaging tests for the desktop half.
+- One-click install link in README.
 - Upgraded the three Asimov stick lessons and repo film with identity-specific
   figures: nous girl hoodie/skirt/hair, Hermes winged helmet/visor/caduceus,
   and a CAD-derived Asimov with visor, side panels, antenna, chest plate, and

@@ -29,6 +29,9 @@ lessons on the unchanged upstream stick-scene runtime. Version 1.2.0 adds
 | `assets/stick-scene/` | Unmodified upstream runtime, MIT license, and three Asimov scenes |
 | `__init__.py` | Registers the five `tts_*` tools and the skill |
 | `skills/tiny-voca-voice/SKILL.md` | Hermes skill that teaches an agent to use the tools |
+| `desktop/plugin.js` | Hermes Desktop half: docked pane, statusbar chip, palette command |
+| `dashboard/manifest.json` + `dashboard/plugin_api.py` | Scoped `/api/plugins/tiny-voca-voice/` backend |
+| `package.json` | Node check/test scripts for the desktop half |
 | `assets/hermes-agent-tinyvoca-repo-1x1.mp4` | 1:1 repo explainer film |
 | `docs/REPO_VIDEO.md` | Repo film spec, timeline, and receipt |
 | `docs/NATIVE_TTS.md` | Native provider config, weights provisioning, troubleshooting |
@@ -61,6 +64,24 @@ hermes config set tts.provider tiny-voca
 ```
 
 It never prompts for secrets and writes nothing outside the Hermes home.
+
+## Hermes Desktop dock
+
+This is a unified Hermes plugin package: the Python tools and the Desktop half
+install together. Install with:
+
+```text
+hermes://plugin/install?repo=MYaelMendez/tiny-voca&enable=1
+```
+
+Then **Capabilities → Plugins → Rescan** and enable **tinyVOCA Voice Dock**.
+The pane docks to the right of the conversation; the statusbar chip shows
+weight readiness. It reaches its own scoped backend at
+`/api/plugins/tiny-voca-voice/` for `/status`, `/identity`, and `/speak`.
+No cookies, tokens, core patches, webviews, or external services are used.
+
+The desktop half is opt-in. The Python backend is mounted only when
+`tiny-voca-voice` is in `plugins.enabled`, matching Hermes' security boundary.
 
 ### Provision the weights
 
