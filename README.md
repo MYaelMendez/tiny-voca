@@ -29,6 +29,8 @@ lessons on the unchanged upstream stick-scene runtime. Version 1.2.0 adds
 | `assets/stick-scene/` | Unmodified upstream runtime, MIT license, and three Asimov scenes |
 | `__init__.py` | Registers the five `tts_*` tools and the skill |
 | `skills/tiny-voca-voice/SKILL.md` | Hermes skill that teaches an agent to use the tools |
+| `assets/hermes-agent-tinyvoca-repo-1x1.mp4` | 1:1 repo explainer film |
+| `docs/REPO_VIDEO.md` | Repo film spec, timeline, and receipt |
 | `docs/NATIVE_TTS.md` | Native provider config, weights provisioning, troubleshooting |
 | `docs/VOICE_COMPUTE_MAP.md` | Voice identity, principal, and compute-layer mapping |
 | `docs/ASIMOV_STICK_LESSONS.md` | Stick-lesson contract, output layout, and authority model |
@@ -74,6 +76,13 @@ printf '%s  %s\n' \
 
 Stop if the checksum check fails. The CLI sets `DIZIONE_DATA` to `$ROOT/phonemizer`
 on every synthesis call, overriding any stale value in the environment.
+
+## Repo film
+
+A 25-second 1:1 explainer is included at
+`assets/hermes-agent-tinyvoca-repo-1x1.mp4`. It maps F2, M2, and ROBOT to their
+compute layers and demonstrates `tts_stick_lesson`. See
+[docs/REPO_VIDEO.md](docs/REPO_VIDEO.md).
 
 ## CLI
 

@@ -4,6 +4,14 @@ All notable changes to `tiny-voca-voice` are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and versions follow
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- 1:1 repo explainer film at
+  `assets/hermes-agent-tinyvoca-repo-1x1.mp4`, with spec and receipt in
+  `docs/REPO_VIDEO.md`.
+
 ## [1.2.0] - 2026-11-18
 
 ### Added

@@ -10,6 +10,7 @@ phonemizer/
 *.flac
 *.ogg
 *.mp4
+!assets/*.mp4
 lesson-out/
 bundles/
 
