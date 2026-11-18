@@ -221,9 +221,77 @@ def op_speak(args):
     return 0
 
 
+def _join_wavs(parts, output: Path, gap_s=0.18):
+    params = None
+    frames = []
+    gap_frames = int(gap_s * paths.SAMPLE_RATE)
+    for i, p in enumerate(parts):
+        with wave.open(str(p), "rb") as w:
+            if params is None:
+                params = w.getparams()
+            frames.append(w.readframes(w.getnframes()))
+            if i < len(parts) - 1:
+                frames.append(b"\x00\x00" * gap_frames)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    if params is None:
+        raise RuntimeError("no WAV parts to join")
+    with wave.open(str(output), "wb") as w:
+        w.setnchannels(params.nchannels)
+        w.setsampwidth(params.sampwidth)
+        w.setframerate(params.framerate)
+        w.writeframes(b"".join(frames))
+
+
+def op_go(args):
+    out = Path(args.output).expanduser() if args.output else paths.hermes_home() / "tiny-voice-go"
+    out.mkdir(parents=True, exist_ok=True)
+    script = [
+        ("F2", "Human root to A E to receipt."),
+        ("M2", "Go tiny. Local voice, public receipts."),
+    ]
+    made = []
+    for n, (voice, text) in enumerate(script):
+        wav = out / f"go-{n:02d}-{voice}.wav"
+        proc = subprocess.run(
+            [PY, str(VOCA_CLI), "--text", text, "--voice", voice,
+             "--output", str(wav), "--speed", str(args.speed or 1.25)],
+            capture_output=True, text=True, timeout=300)
+        result = _parse_json(proc.stdout)
+        if proc.returncode != 0 or not result.get("success"):
+            raise RuntimeError(result.get("error") or (proc.stderr or "tiny-voca failed")[-500:])
+        rec = result.get("receipt")
+        if isinstance(rec, dict):
+            rec = rec.get("hash")
+        made.append({"voice": voice, "text": text, "audio": str(wav),
+                     "duration_s": result.get("duration_s"),
+                     "sha256": result.get("sha256"), "receipt": rec})
+    joined = out / "go.wav"
+    _join_wavs([Path(item["audio"]) for item in made], joined)
+    env_keys = ("VOXMEL_REPO", "VOXMEL_MODEL_DIR", "VOXMEL_VOCOS_DIR",
+                "VOXMEL_TOKENIZER_PATH", "VOXMEL_PROMPT_AUDIO",
+                "VOXMEL_PROMPT_TEXT", "VOXMEL_CONSENT")
+    voxmel_ready = {k: bool(os.environ.get(k)) for k in env_keys}
+    bundle = {
+        "authority": "HUMAN://ROOT",
+        "product": "tinyVOICE",
+        "action": "GO://TINY",
+        "output": str(out),
+        "joined_wav": str(joined),
+        "joined_sha256": _sha(joined),
+        "lines": made,
+        "voxmel_ready": voxmel_ready,
+        "voxmel_can_bind": all(voxmel_ready.values()),
+        "authority_chain": "HUMAN://ROOT → æ → RECEIPT",
+    }
+    (out / "go.json").write_text(json.dumps(bundle, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    _out({"success": True, "action": "GO://TINY", "authority": "HUMAN://ROOT",
+          "output": str(out), "wav": str(joined), "sha256": _sha(joined),
+          "lines": len(made), "voxmel_ready": all(voxmel_ready.values())})
+
+
 def main():
     p = argparse.ArgumentParser(description="tinyVOICE local voice router.")
-    p.add_argument("--op", choices=("list", "bind", "speak"), required=True)
+    p.add_argument("--op", choices=("list", "bind", "speak", "go"), required=True)
     p.add_argument("--provider", choices=("tiny-voca", "voxmel"), default="tiny-voca")
     p.add_argument("--voice", default=None)
     p.add_argument("--text", default=None)
@@ -240,6 +308,8 @@ def main():
             return 0
         if args.op == "bind":
             return op_bind(args)
+        if args.op == "go":
+            return op_go(args)
         return op_speak(args)
     except Exception as exc:
         return _fail(f"{type(exc).__name__}: {exc}")

@@ -45,6 +45,7 @@ the digital twin, not the root.
 
 ```sh
 python3 scripts/tiny_voice.py --op list
+python3 scripts/tiny_voice.py --op go
 python3 scripts/tiny_voice.py --op bind \
   --voice SOVÆREIGN \
   --prompt-audio reference.wav \
@@ -66,11 +67,13 @@ The VoxMel adapter is fail-closed. Set these before using the `voxmel` provider:
 - `VOXMEL_VOCOS_DIR` — Vocos model directory.
 - `VOXMEL_TOKENIZER_PATH` — Qwen tokenizer path.
 - `VOXMEL_PROMPT_AUDIO`, `VOXMEL_PROMPT_TEXT` — reference pair.
+- `VOXMEL_CONSENT` — explicit consent file containing `HUMAN://ROOT` and consent.
 - Optional: `VOXMEL_CHECKPOINT`, `VOXMEL_DEVICE`, `VOXMEL_SEED`,
   `VOXMEL_CFG_TEXT`, `VOXMEL_CFG_SPK`, `VOXMEL_UP_STEPS`.
 
 No weights are vendored. The adapter refuses to run if any required path is
-missing.
+missing. `examples/tiny-voice/` contains consent, transcript, and Chinese script
+templates.
 
 ## Upstream
 

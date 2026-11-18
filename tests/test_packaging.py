@@ -47,6 +47,15 @@ class PackagingTest(unittest.TestCase):
         self.assertIn("tts_teleprompt", (ROOT / "plugin.yaml").read_text(encoding="utf-8"))
         self.assertIn("docs/TINY_TELEPROMPTER.md", (ROOT / "README.md").read_text(encoding="utf-8"))
 
+    def test_go_tiny_starter_is_shipped(self):
+        for rel in ("examples/tiny-voice/consent.template.txt",
+                    "examples/tiny-voice/prompt_text.template.txt",
+                    "examples/tiny-voice/sovereignty.zh.json"):
+            self.assertTrue((ROOT / rel).exists(), f"missing starter asset {rel}")
+        src = (ROOT / "scripts" / "tiny_voice.py").read_text(encoding="utf-8")
+        self.assertIn("GO://TINY", src)
+        self.assertIn("VOXMEL_CONSENT", src)
+
     def test_tiny_voice_router_is_shipped(self):
         src = (ROOT / "scripts" / "tiny_voice.py").read_text(encoding="utf-8")
         for token in ("ACTION_VOICE_BIND", "ACTION_VOICE_SPEAK", "VOXMEL_REPO",

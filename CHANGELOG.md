@@ -8,6 +8,9 @@ All notable changes to `tiny-voca-voice` are documented here. Format follows
 
 ### Added
 
+- `GO://TINY` starter: `tts_voice({op:"go"})` produces a receipted two-voice
+  tinyVOCA demo and reports VoxMel readiness.
+- `examples/tiny-voice/` consent, exact-transcript, and Chinese script templates.
 - tinyVOICE router with `tts_voice`: lists local providers, binds a consented
   human digital-twin voice with `VOICE://BIND`, and routes synthesis to
   tiny-voca or VoxMel with `VOICE://SPEAK`.

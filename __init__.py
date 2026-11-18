@@ -194,8 +194,8 @@ def register(ctx):
     ctx.register_tool(
         name="tts_voice", toolset="tiny-voca-voice", handler=tts_voice,
         schema={"type": "object", "properties": {
-            "op": {"type": "string", "enum": ["list", "bind", "speak"],
-                   "description": "List providers, bind a human-twin voice, or synthesize."},
+            "op": {"type": "string", "enum": ["list", "bind", "speak", "go"],
+                   "description": "List providers, bind a digital twin, synthesize, or run the GO://TINY starter."},
             "provider": {"type": "string", "enum": ["tiny-voca", "voxmel"]},
             "voice": {"type": "string", "description": "F2, M2, ROBOT, or SOVÆREIGN."},
             "text": {"type": "string"}, "output": {"type": "string"},
