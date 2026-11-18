@@ -33,15 +33,16 @@ surface: a narrated 9:16 command glass with `PROMPT://BUILD` receipts.
 
 | Path | Purpose |
 |---|---|
-| `plugin.yaml` | Manifest: six tools and this plugin version |
+| `plugin.yaml` | Manifest: seven tools and this plugin version |
 | `identity.json` | Voice → principal → compute-layer identity map |
 | `scripts/tiny_voca_voice.py` | Provider CLI: `--text-file` in, WAV out, JSON on the last stdout line |
 | `scripts/tiny_voca_paths.py` | Stdlib-only path, alias, and receipt-chain helpers |
 | `scripts/tiny_voca_verify.py` | Validate the receipt hash chain; prints one JSON line |
 | `scripts/asimov_stick_lesson.py` | Build narrated Asimov stick lessons with a `LESSON://BUILD` receipt |
 | `scripts/tiny_teleprompter.py` | Build TTS-synced 9:16 teleprompter pages with `PROMPT://BUILD` receipts |
+| `scripts/tiny_voice.py` | tinyVOICE router: tiny-voca today, VoxMel human-twin voice when provisioned |
 | `assets/stick-scene/` | Unmodified upstream runtime, MIT license, and three Asimov scenes |
-| `__init__.py` | Registers the six `tts_*` tools and the skill |
+| `__init__.py` | Registers the seven `tts_*` tools and the skill |
 | `skills/tiny-voca-voice/SKILL.md` | Hermes skill that teaches an agent to use the tools |
 | `desktop/plugin.js` | Hermes Desktop half: docked pane, statusbar chip, palette command |
 | `dashboard/manifest.json` + `dashboard/plugin_api.py` | Scoped `/api/plugins/tiny-voca-voice/` backend |
@@ -56,6 +57,7 @@ surface: a narrated 9:16 command glass with `PROMPT://BUILD` receipts.
 | `docs/VOICE_COMPUTE_MAP.md` | Voice identity, principal, and compute-layer mapping |
 | `docs/ASIMOV_STICK_LESSONS.md` | Stick-lesson contract, output layout, and authority model |
 | `docs/TINY_TELEPROMPTER.md` | Teleprompter contract, controls, and receipts |
+| `docs/TINY_VOICE.md` | tinyVOICE providers, Chinese voice, and digital-twin governance |
 | `install.sh` | Copies the plugin into `$HERMES_HOME/plugins/tiny-voca-voice` |
 | `.github/workflows/test.yml` | CI: `py_compile` + `unittest` only |
 
@@ -200,7 +202,7 @@ Once enabled, the built-in `text_to_speech` tool and the `/voice on` and
 
 ## Plugin tools and aliases
 
-The plugin registers six top-level tools:
+The plugin registers seven top-level tools:
 
 | Tool | Action |
 |---|---|
@@ -210,6 +212,7 @@ The plugin registers six top-level tools:
 | `tts_verify` | Validate the receipt hash chain |
 | `tts_stick_lesson` | List or build narrated Asimov stick lessons |
 | `tts_teleprompt` | List or build TTS-synced tinyTELEPROMPTER pages |
+| `tts_voice` | List tinyVOICE providers, bind a consented digital-twin voice, or synthesize |
 
 Example calls:
 
@@ -220,6 +223,7 @@ tts_stick_lesson({"op": "list"})
 tts_stick_lesson({"op": "build", "lesson": "all", "out": "/path/to/bundle"})
 tts_teleprompt({"op": "list"})
 tts_teleprompt({"op": "build", "script": "sovereignty", "out": "/path/to/teleprompter"})
+tts_voice({"op": "list"})
 tts_receipts({"limit": 10})
 tts_verify({})
 ```

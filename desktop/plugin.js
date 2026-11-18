@@ -9,7 +9,7 @@ import { jsx, jsxs } from 'react/jsx-runtime'
 
 const ID = 'tiny-voca-voice'
 const VERSION = '1.2.0'
-const VOICE_COLORS = { F2: 'var(--ui-accent)', M2: 'var(--ui-text-secondary)', ROBOT: 'var(--ui-text-tertiary)' }
+const VOICE_COLORS = { F2: 'var(--ui-accent)', M2: 'var(--ui-text-secondary)', ROBOT: 'var(--ui-text-tertiary)', 'SOVÆREIGN': 'var(--ui-accent)' }
 
 function useIdentity(ctx) {
   return useQuery({
@@ -79,7 +79,7 @@ export function TinyVocaPane({ ctx }) {
         jsxs('select', {
           value: voice, onChange: e => setVoice(e.target.value),
           style: { background: 'transparent', color: 'var(--ui-text-secondary)', border: '1px solid var(--ui-stroke-secondary)', borderRadius: 4, padding: '4px 6px' },
-          children: ['M2', 'F2', 'ROBOT'].map(v => jsx('option', { value: v, children: v }, v))
+          children: ['M2', 'F2', 'ROBOT', 'SOVÆREIGN'].map(v => jsx('option', { value: v, children: v }, v))
         }),
         jsxs('select', {
           value: String(speed), onChange: e => setSpeed(Number(e.target.value)),

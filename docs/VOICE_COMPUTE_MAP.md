@@ -33,11 +33,12 @@ The response includes:
 
 ```json
 {
-  "identity": { "bindings": { "F2": {}, "M2": {}, "ROBOT": {} } },
+  "identity": { "bindings": { "F2": {}, "M2": {}, "ROBOT": {}, "SOVÆREIGN": {} } },
   "compute_layers": {
     "human-intent": "F2 / nous girl — HUMAN://ROOT intent, local tiny-voca CPU",
     "agent-runtime": "M2 / hermes-agent — agent execution, local tiny-voca CPU",
-    "robot-body": "ROBOT / asimov-robot — F2 source resampled for Menlo Asimov speaker"
+    "robot-body": "ROBOT / asimov-robot — F2 source resampled for Menlo Asimov speaker",
+    "human-twin": "SOVÆREIGN / soværeign voice — human-approved VoxMel clone, English and Chinese"
   }
 }
 ```

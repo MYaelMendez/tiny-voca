@@ -1,8 +1,8 @@
 """tiny-voca-voice 1.2.0 — self-hosted English TTS plus Asimov stick lessons.
 
-The plugin registers six light tools and delegates synthesis, verification,
-lesson, and teleprompter builds to portable scripts. All paths resolve from
-$HERMES_HOME; no machine-local roots. The CLI writes the canonical receipts.
+The plugin registers seven light tools and delegates synthesis, verification,
+lesson, teleprompter, and provider routing to portable scripts. All paths resolve
+from $HERMES_HOME; no machine-local roots. The CLI writes the canonical receipts.
 """
 import json, os, shutil, subprocess, sys
 from pathlib import Path
@@ -13,6 +13,7 @@ CLI = SCRIPTS / "tiny_voca_voice.py"
 VERIFY = SCRIPTS / "tiny_voca_verify.py"
 STICK = SCRIPTS / "asimov_stick_lesson.py"
 TELEPROMPTER = SCRIPTS / "tiny_teleprompter.py"
+VOICE = SCRIPTS / "tiny_voice.py"
 IDENTITY = ROOT / "identity.json"
 PY = os.environ.get("HERMES_TINY_VOCA_PYTHON") or shutil.which("python3") or sys.executable
 HERMES_HOME = Path(os.environ.get("HERMES_HOME", Path.home() / ".hermes"))
@@ -133,6 +134,17 @@ def register(ctx):
             cmd += ["--speed", str(args["speed"])]
         return _out(_run(TELEPROMPTER, cmd))
 
+    def tts_voice(args: dict) -> str:
+        cmd = ["--op", str(args.get("op", "list"))]
+        for key, flag in (("provider", "--provider"), ("voice", "--voice"),
+                          ("text", "--text"), ("output", "--output"),
+                          ("language", "--language"), ("speed", "--speed"),
+                          ("prompt_audio", "--prompt-audio"),
+                          ("prompt_text", "--prompt-text"), ("consent", "--consent")):
+            if args.get(key) is not None:
+                cmd += [flag, str(args[key])]
+        return _out(_run(VOICE, cmd))
+
     ctx.register_tool(
         name="tts_speak", toolset="tiny-voca-voice", handler=tts_speak,
         schema={"type": "object", "properties": {
@@ -177,6 +189,21 @@ def register(ctx):
                        "description": "sovereignty, asimov-voice-map, or a path to script JSON."},
             "out": {"type": "string", "description": "Output directory for build."},
             "speed": {"type": "number", "description": "Narration speed. Default 1.25."},
+        }, "required": ["op"]},
+    )
+    ctx.register_tool(
+        name="tts_voice", toolset="tiny-voca-voice", handler=tts_voice,
+        schema={"type": "object", "properties": {
+            "op": {"type": "string", "enum": ["list", "bind", "speak"],
+                   "description": "List providers, bind a human-twin voice, or synthesize."},
+            "provider": {"type": "string", "enum": ["tiny-voca", "voxmel"]},
+            "voice": {"type": "string", "description": "F2, M2, ROBOT, or SOVÆREIGN."},
+            "text": {"type": "string"}, "output": {"type": "string"},
+            "language": {"type": "string", "description": "en or zh."},
+            "speed": {"type": "number"},
+            "prompt_audio": {"type": "string", "description": "Reference WAV for VOICE://BIND."},
+            "prompt_text": {"type": "string", "description": "Exact transcript for VOICE://BIND."},
+            "consent": {"type": "string", "description": "Explicit consent file for VOICE://BIND."},
         }, "required": ["op"]},
     )
 

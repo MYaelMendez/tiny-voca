@@ -13,7 +13,7 @@ metadata:
 
 # tiny-voca-voice Skill
 
-`tiny-voca-voice` is a first-class Hermes plugin with six registered tools.
+`tiny-voca-voice` is a first-class Hermes plugin with seven registered tools.
 It speaks English locally through the tiny-voca ONNX model, writes 24 kHz mono
 WAV files, appends `HUMAN://ROOT` hash-chained receipts, and builds narrated
 Asimov stick lessons on the unmodified upstream stick-scene runtime.
@@ -45,7 +45,7 @@ It does not train voices, clone voices, stream audio, or read non-English text.
 ## How to Run
 
 Prefer the registered tools: `tts_speak`, `tts_voices`, `tts_receipts`,
-`tts_verify`, `tts_stick_lesson`, and `tts_teleprompt`. All paths below are
+`tts_verify`, `tts_stick_lesson`, `tts_teleprompt`, and `tts_voice`. All paths below are
 repo-relative or environment-based; never hardcode a machine-local directory.
 
 - `terminal(command="python3 scripts/tiny_voca_voice.py --text-file in.txt --output out.wav --voice M2")`
@@ -58,8 +58,9 @@ repo-relative or environment-based; never hardcode a machine-local directory.
 - `read_file(path="site/index.html")` — beautiful project page.
 - `read_file(path="docs/ASIMOV_STICK_LESSONS.md")` — lesson contract.
 - `read_file(path="docs/TINY_TELEPROMPTER.md")` — teleprompter contract.
+- `read_file(path="docs/TINY_VOICE.md")` — tinyVOICE provider and twin governance.
 - Voices: `F2` (`nous-girl`) and `M2` (`hermes-agent`); aliases are normalized.
-- Identity: `F2 → human-intent`, `M2 → agent-runtime`, `ROBOT → robot-body`.
+- Identity: `F2 → human-intent`, `M2 → agent-runtime`, `ROBOT → robot-body`, `SOVÆREIGN → human-twin`.
 - Receipts: `TTS://SPEAK`, `LESSON://BUILD`, `PROMPT://BUILD`; authority `HUMAN://ROOT`.
 
 ## Quick Reference
@@ -74,6 +75,7 @@ repo-relative or environment-based; never hardcode a machine-local directory.
 - `tts_teleprompt({op:"list"})` — list teleprompter scripts.
 - `tts_teleprompt({op:"build", script:"sovereignty", out:"..."})` — build a
   narrated 9:16 command glass with `PROMPT://BUILD`.
+- `tts_voice({op:"list"})` — list tinyVOICE providers and identity bindings.
 - Desktop dock: `desktop/plugin.js` + `dashboard/plugin_api.py`; enable
   **tinyVOCA Voice Dock** in Capabilities → Plugins, then use the right pane.
 - Lesson IDs: `asimov-authority`, `asimov-verbs`, `asimov-twin`, `all`.

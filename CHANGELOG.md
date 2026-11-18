@@ -8,6 +8,12 @@ All notable changes to `tiny-voca-voice` are documented here. Format follows
 
 ### Added
 
+- tinyVOICE router with `tts_voice`: lists local providers, binds a consented
+  human digital-twin voice with `VOICE://BIND`, and routes synthesis to
+  tiny-voca or VoxMel with `VOICE://SPEAK`.
+- `SOVÆREIGN` identity binding: `human-twin`, English and Chinese, human root,
+  explicit consent required.
+- `docs/TINY_VOICE.md` with provider matrix and one-person-company thesis.
 - `tts_teleprompt` tool and `scripts/tiny_teleprompter.py`: builds a 9:16
   tinyTELEPROMPTER page with TTS-synced lines, horizontal read band, active-line
   highlight, progress/ETA, keyboard controls, voice toggle, and `PROMPT://BUILD`

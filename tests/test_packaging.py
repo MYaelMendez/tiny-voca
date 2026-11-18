@@ -35,7 +35,7 @@ class PackagingTest(unittest.TestCase):
         identity = json.loads((ROOT / "identity.json").read_text(encoding="utf-8"))
         self.assertEqual(identity["authority"], "HUMAN://ROOT")
         self.assertEqual(set(identity["compute_layers"]),
-                         {"human-intent", "agent-runtime", "robot-body"})
+                         {"human-intent", "agent-runtime", "robot-body", "human-twin"})
         install = (ROOT / "install.sh").read_text(encoding="utf-8")
         self.assertIn("identity.json", install)
 
@@ -46,6 +46,13 @@ class PackagingTest(unittest.TestCase):
             self.assertIn(token, src, f"teleprompter source missing {token!r}")
         self.assertIn("tts_teleprompt", (ROOT / "plugin.yaml").read_text(encoding="utf-8"))
         self.assertIn("docs/TINY_TELEPROMPTER.md", (ROOT / "README.md").read_text(encoding="utf-8"))
+
+    def test_tiny_voice_router_is_shipped(self):
+        src = (ROOT / "scripts" / "tiny_voice.py").read_text(encoding="utf-8")
+        for token in ("ACTION_VOICE_BIND", "ACTION_VOICE_SPEAK", "VOXMEL_REPO",
+                      "SOVÆREIGN", "human-twin"):
+            self.assertIn(token, src, f"tinyVOICE source missing {token!r}")
+        self.assertIn("tts_voice", (ROOT / "plugin.yaml").read_text(encoding="utf-8"))
 
     def test_first_class_repo_beauty_and_attribution(self):
         for rel in ("site/index.html", "assets/brand/hermes-agent-tinyvoca-logo.svg",

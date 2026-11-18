@@ -42,13 +42,28 @@
       "resample_from_hz": 24000,
       "authority": "executor only; never an authority root",
       "use": "Asimov face tablet, speaker output, and robot face-state videos"
+    },
+    "SOVÆREIGN": {
+      "id": "SOVÆREIGN",
+      "name": "soværeign voice",
+      "aliases": ["SOVÆREIGN", "soværeign", "sovareign", "yæl", "yael", "human-twin", "digital twin", "digital-twin"],
+      "role": "human digital twin voice",
+      "principal": "HUMAN://ROOT",
+      "source": "human reference audio plus exact transcript",
+      "compute_layer": "human-twin",
+      "runtime": "voxmel zero-shot cloning (optional tinyVOICE provider)",
+      "languages": ["en", "zh"],
+      "sample_rate_hz": 24000,
+      "authority": "human-approved digital twin; never authority root; VOICE://BIND consent required",
+      "use": "one-person company movement, native Chinese narration, and the soværeign voice"
     }
   },
   "compute_layers": {
     "human-intent": "F2 / nous girl — HUMAN://ROOT intent, local tiny-voca CPU",
     "agent-runtime": "M2 / hermes-agent — agent execution, local tiny-voca CPU",
-    "robot-body": "ROBOT / asimov-robot — F2 source resampled for Menlo Asimov speaker"
+    "robot-body": "ROBOT / asimov-robot — F2 source resampled for Menlo Asimov speaker",
+    "human-twin": "SOVÆREIGN / soværeign voice — human-approved VoxMel clone, English and Chinese"
   },
-  "receipt_actions": ["TTS://SPEAK", "LESSON://BUILD"],
+  "receipt_actions": ["TTS://SPEAK", "LESSON://BUILD", "PROMPT://BUILD", "VOICE://BIND"],
   "note": "Alias resolution is case-insensitive and normalizes '-' and '_' to spaces. Identity does not transfer authority."
 }
