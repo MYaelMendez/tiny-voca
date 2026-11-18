@@ -8,6 +8,12 @@ All notable changes to `tiny-voca-voice` are documented here. Format follows
 
 ### Added
 
+- `tts_teleprompt` tool and `scripts/tiny_teleprompter.py`: builds a 9:16
+  tinyTELEPROMPTER page with TTS-synced lines, horizontal read band, active-line
+  highlight, progress/ETA, keyboard controls, voice toggle, and `PROMPT://BUILD`
+  receipts.
+- `docs/TINY_TELEPROMPTER.md` with script schema and controls.
+- Built-in scripts: `sovereignty` and `asimov-voice-map`.
 - Beautiful self-contained project page at `site/index.html`, with availability
   table, 1:1 film, install link, and upstream attribution.
 - Brand assets: SVG master and 1080×1080 logo under `assets/brand/`.

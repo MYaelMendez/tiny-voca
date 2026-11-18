@@ -39,6 +39,14 @@ class PackagingTest(unittest.TestCase):
         install = (ROOT / "install.sh").read_text(encoding="utf-8")
         self.assertIn("identity.json", install)
 
+    def test_teleprompter_capability_is_shipped(self):
+        src = (ROOT / "scripts" / "tiny_teleprompter.py").read_text(encoding="utf-8")
+        for token in ("ACTION_PROMPT_BUILD", "READ LINE", "HUMAN://ROOT → æ → RECEIPT",
+                      "prefers-reduced-motion", "tinyVOCA powered"):
+            self.assertIn(token, src, f"teleprompter source missing {token!r}")
+        self.assertIn("tts_teleprompt", (ROOT / "plugin.yaml").read_text(encoding="utf-8"))
+        self.assertIn("docs/TINY_TELEPROMPTER.md", (ROOT / "README.md").read_text(encoding="utf-8"))
+
     def test_first_class_repo_beauty_and_attribution(self):
         for rel in ("site/index.html", "assets/brand/hermes-agent-tinyvoca-logo.svg",
                     "assets/brand/hermes-agent-tinyvoca-logo-1080.png",

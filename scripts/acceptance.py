@@ -34,7 +34,7 @@ def main():
         spec.loader.exec_module(mod)
         ctx = FakeCtx()
         mod.register(ctx)
-        assert sorted(ctx.tools) == ["tts_receipts", "tts_speak", "tts_stick_lesson", "tts_verify", "tts_voices"], sorted(ctx.tools)
+        assert sorted(ctx.tools) == ["tts_receipts", "tts_speak", "tts_stick_lesson", "tts_teleprompt", "tts_verify", "tts_voices"], sorted(ctx.tools)
 
         voices = json.loads(ctx.tools["tts_voices"][0]({}))
         assert voices["success"] and [v["name"] for v in voices["voices"]] == ["nous-girl", "hermes-agent"]
@@ -49,6 +49,10 @@ def main():
         lessons = json.loads(ctx.tools["tts_stick_lesson"][0]({"op": "list"}))
         assert lessons["success"] and [x["id"] for x in lessons["lessons"]] == [
             "asimov-authority", "asimov-verbs", "asimov-twin"], lessons
+
+        teleprompt = json.loads(ctx.tools["tts_teleprompt"][0]({"op": "list"}))
+        assert teleprompt["success"] and [x["id"] for x in teleprompt["scripts"]] == [
+            "sovereignty", "asimov-voice-map"], teleprompt
 
         for p in ROOT.rglob("*.py"):
             if any(part in {".git", "__pycache__"} for part in p.parts):

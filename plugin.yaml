@@ -11,4 +11,5 @@ provides_tools:
   - tts_receipts
   - tts_verify
   - tts_stick_lesson
+  - tts_teleprompt
 provides_hooks: []

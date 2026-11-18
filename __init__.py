@@ -1,8 +1,8 @@
 """tiny-voca-voice 1.2.0 — self-hosted English TTS plus Asimov stick lessons.
 
-The plugin registers five light tools and delegates synthesis, verification,
-and lesson building to portable scripts. All paths resolve from $HERMES_HOME;
-no machine-local roots. The CLI writes the canonical hash-chained receipts.
+The plugin registers six light tools and delegates synthesis, verification,
+lesson, and teleprompter builds to portable scripts. All paths resolve from
+$HERMES_HOME; no machine-local roots. The CLI writes the canonical receipts.
 """
 import json, os, shutil, subprocess, sys
 from pathlib import Path
@@ -12,6 +12,7 @@ SCRIPTS = ROOT / "scripts"
 CLI = SCRIPTS / "tiny_voca_voice.py"
 VERIFY = SCRIPTS / "tiny_voca_verify.py"
 STICK = SCRIPTS / "asimov_stick_lesson.py"
+TELEPROMPTER = SCRIPTS / "tiny_teleprompter.py"
 IDENTITY = ROOT / "identity.json"
 PY = os.environ.get("HERMES_TINY_VOCA_PYTHON") or shutil.which("python3") or sys.executable
 HERMES_HOME = Path(os.environ.get("HERMES_HOME", Path.home() / ".hermes"))
@@ -122,6 +123,16 @@ def register(ctx):
             cmd += ["--speed", str(args["speed"])]
         return _out(_run(STICK, cmd))
 
+    def tts_teleprompt(args: dict) -> str:
+        cmd = ["--op", str(args.get("op", "list"))]
+        if args.get("script"):
+            cmd += ["--script", str(args["script"])]
+        if args.get("out"):
+            cmd += ["--out", str(args["out"])]
+        if args.get("speed") is not None:
+            cmd += ["--speed", str(args["speed"])]
+        return _out(_run(TELEPROMPTER, cmd))
+
     ctx.register_tool(
         name="tts_speak", toolset="tiny-voca-voice", handler=tts_speak,
         schema={"type": "object", "properties": {
@@ -153,6 +164,17 @@ def register(ctx):
                    "description": "List lessons or build a narrated lesson bundle."},
             "lesson": {"type": "string",
                        "description": "asimov-authority, asimov-verbs, asimov-twin, or all."},
+            "out": {"type": "string", "description": "Output directory for build."},
+            "speed": {"type": "number", "description": "Narration speed. Default 1.25."},
+        }, "required": ["op"]},
+    )
+    ctx.register_tool(
+        name="tts_teleprompt", toolset="tiny-voca-voice", handler=tts_teleprompt,
+        schema={"type": "object", "properties": {
+            "op": {"type": "string", "enum": ["list", "build"],
+                   "description": "List teleprompter scripts or build a 9:16 narrated page."},
+            "script": {"type": "string",
+                       "description": "sovereignty, asimov-voice-map, or a path to script JSON."},
             "out": {"type": "string", "description": "Output directory for build."},
             "speed": {"type": "number", "description": "Narration speed. Default 1.25."},
         }, "required": ["op"]},

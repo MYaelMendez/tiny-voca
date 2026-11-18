@@ -99,6 +99,7 @@ footer{border-top:1px solid var(--line);margin-top:52px;padding-top:18px;color:v
     <div class="grid">
       <div class="card"><h3>tts_speak</h3><p>Local English speech, 24 kHz WAV, canonical F2/M2 alias resolution, and a <code>TTS://SPEAK</code> receipt.</p></div>
       <div class="card cyan"><h3>tts_stick_lesson</h3><p>Three narrated Asimov lessons on the unchanged upstream stick-scene runtime.</p></div>
+      <div class="card mag"><h3>tts_teleprompt</h3><p>tinyTELEPROMPTER: 9:16 TTS-synced command glass with line highlighting, ETA, and receipts.</p></div>
       <div class="card gold"><h3>Voice identity</h3><p><code>F2 → human-intent</code>, <code>M2 → agent-runtime</code>, <code>ROBOT → robot-body</code>.</p></div>
       <div class="card mag"><h3>Desktop dock</h3><p>Unified Hermes Desktop half: pane, statusbar chip, palette command, scoped REST backend.</p></div>
     </div>
@@ -123,9 +124,10 @@ footer{border-top:1px solid var(--line);margin-top:52px;padding-top:18px;color:v
     <h2>Availability</h2>
     <table>
       <tr><th>Capability</th><th>State</th><th>Note</th></tr>
-      <tr><td>CLI + 5 Hermes tools</td><td class="status-shipped">shipped</td><td>py_compile, unittest, acceptance passing.</td></tr>
+      <tr><td>CLI + 6 Hermes tools</td><td class="status-shipped">shipped</td><td>py_compile, unittest, acceptance passing.</td></tr>
       <tr><td>Hermes Desktop dock</td><td class="status-shipped">shipped</td><td>Opt-in pane with scoped `/api/plugins/tiny-voca-voice/` routes.</td></tr>
-      <tr><td>Receipted narration</td><td class="status-shipped">shipped</td><td>`TTS://SPEAK` and `LESSON://BUILD` in one hash chain.</td></tr>
+      <tr><td>Receipted narration</td><td class="status-shipped">shipped</td><td>`TTS://SPEAK`, `LESSON://BUILD`, and `PROMPT://BUILD` in one hash chain.</td></tr>
+      <tr><td>tinyTELEPROMPTER</td><td class="status-shipped">shipped</td><td>Narrated 9:16 command glass with keyboard controls and receipts.</td></tr>
       <tr><td>Native TTS provider docs</td><td class="status-reference">reference-only</td><td>Config walkthrough shipped; voice toggles apply next session.</td></tr>
       <tr><td>Non-English voices</td><td class="status-planned">planned</td><td>Upstream phonemizer reads English only.</td></tr>
       <tr><td>Physical Asimov binding</td><td class="status-blocked">blocked</td><td>Requires hardware calibration and human approval gate.</td></tr>

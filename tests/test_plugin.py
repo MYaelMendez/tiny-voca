@@ -42,9 +42,9 @@ class TinyVocaPluginTests(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
-    def test_registers_five_tools_and_skill(self):
+    def test_registers_six_tools_and_skill(self):
         self.assertEqual(set(self.ctx.tools), {"tts_speak", "tts_voices", "tts_receipts",
-                                               "tts_verify", "tts_stick_lesson"})
+                                               "tts_verify", "tts_stick_lesson", "tts_teleprompt"})
         self.assertIn("tiny-voca-voice", self.ctx.skills)
         self.assertTrue(self.ctx.skills["tiny-voca-voice"].exists())
 
@@ -79,6 +79,12 @@ class TinyVocaPluginTests(unittest.TestCase):
         ids = [x["id"] for x in out["lessons"]]
         self.assertEqual(ids, ["asimov-authority", "asimov-verbs", "asimov-twin"])
         self.assertTrue(all(x["lines"] > 0 for x in out["lessons"]))
+
+    def test_teleprompt_list(self):
+        out = json.loads(self.ctx.tools["tts_teleprompt"][0]({"op": "list"}))
+        self.assertTrue(out["success"])
+        self.assertEqual([s["id"] for s in out["scripts"]],
+                         ["sovereignty", "asimov-voice-map"])
 
     def test_speak_requires_text_or_file(self):
         out = json.loads(self.ctx.tools["tts_speak"][0]({}))

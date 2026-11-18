@@ -21,7 +21,8 @@ SHA-256 verified. Every spoken line is recorded as a `HUMAN://ROOT` hash-chained
 Version 1.1.0 added `tts_stick_lesson`, which builds narrated Asimov robot stick
 lessons on the unchanged upstream stick-scene runtime. Version 1.2.0 adds
 `identity.json`, a machine-readable voice → principal → compute-layer map that
-`tts_voices({})` exposes to Hermes-agent users.
+`tts_voices({})` exposes to Hermes-agent users. tinyTELEPROMPTER is the newest
+surface: a narrated 9:16 command glass with `PROMPT://BUILD` receipts.
 
 - **Version:** 1.2.0
 - **Runtime root:** `$TINY_VOCA_HOME`, falling back to `$HERMES_HOME/tiny-voca`
@@ -32,14 +33,15 @@ lessons on the unchanged upstream stick-scene runtime. Version 1.2.0 adds
 
 | Path | Purpose |
 |---|---|
-| `plugin.yaml` | Manifest: five tools and this plugin version |
+| `plugin.yaml` | Manifest: six tools and this plugin version |
 | `identity.json` | Voice → principal → compute-layer identity map |
 | `scripts/tiny_voca_voice.py` | Provider CLI: `--text-file` in, WAV out, JSON on the last stdout line |
 | `scripts/tiny_voca_paths.py` | Stdlib-only path, alias, and receipt-chain helpers |
 | `scripts/tiny_voca_verify.py` | Validate the receipt hash chain; prints one JSON line |
 | `scripts/asimov_stick_lesson.py` | Build narrated Asimov stick lessons with a `LESSON://BUILD` receipt |
+| `scripts/tiny_teleprompter.py` | Build TTS-synced 9:16 teleprompter pages with `PROMPT://BUILD` receipts |
 | `assets/stick-scene/` | Unmodified upstream runtime, MIT license, and three Asimov scenes |
-| `__init__.py` | Registers the five `tts_*` tools and the skill |
+| `__init__.py` | Registers the six `tts_*` tools and the skill |
 | `skills/tiny-voca-voice/SKILL.md` | Hermes skill that teaches an agent to use the tools |
 | `desktop/plugin.js` | Hermes Desktop half: docked pane, statusbar chip, palette command |
 | `dashboard/manifest.json` + `dashboard/plugin_api.py` | Scoped `/api/plugins/tiny-voca-voice/` backend |
@@ -53,6 +55,7 @@ lessons on the unchanged upstream stick-scene runtime. Version 1.2.0 adds
 | `docs/NATIVE_TTS.md` | Native provider config, weights provisioning, troubleshooting |
 | `docs/VOICE_COMPUTE_MAP.md` | Voice identity, principal, and compute-layer mapping |
 | `docs/ASIMOV_STICK_LESSONS.md` | Stick-lesson contract, output layout, and authority model |
+| `docs/TINY_TELEPROMPTER.md` | Teleprompter contract, controls, and receipts |
 | `install.sh` | Copies the plugin into `$HERMES_HOME/plugins/tiny-voca-voice` |
 | `.github/workflows/test.yml` | CI: `py_compile` + `unittest` only |
 
@@ -197,7 +200,7 @@ Once enabled, the built-in `text_to_speech` tool and the `/voice on` and
 
 ## Plugin tools and aliases
 
-The plugin registers five top-level tools:
+The plugin registers six top-level tools:
 
 | Tool | Action |
 |---|---|
@@ -206,6 +209,7 @@ The plugin registers five top-level tools:
 | `tts_receipts` | Read recent ledger entries |
 | `tts_verify` | Validate the receipt hash chain |
 | `tts_stick_lesson` | List or build narrated Asimov stick lessons |
+| `tts_teleprompt` | List or build TTS-synced tinyTELEPROMPTER pages |
 
 Example calls:
 
@@ -214,12 +218,22 @@ tts_voices({})
 tts_speak({"text": "Receipts on every action.", "voice": "hermes-agent"})
 tts_stick_lesson({"op": "list"})
 tts_stick_lesson({"op": "build", "lesson": "all", "out": "/path/to/bundle"})
+tts_teleprompt({"op": "list"})
+tts_teleprompt({"op": "build", "script": "sovereignty", "out": "/path/to/teleprompter"})
 tts_receipts({"limit": 10})
 tts_verify({})
 ```
 
 The parent Hermes repo's aggregate `ae` tool exposes the `speak` and `voices`
 shortcuts, which dispatch to `tts_speak` and `tts_voices` respectively.
+
+### tinyTELEPROMPTER
+
+`tts_teleprompt` builds a 9:16 command glass from a deterministic script. Lines
+are synthesized by tinyVOCA, highlighted inside a horizontal read band, and
+receipted with `TTS://SPEAK` plus one `PROMPT://BUILD`. It has play/pause, line
+jump, speed, font-size, voice toggle, keyboard controls, progress, and ETA.
+See [docs/TINY_TELEPROMPTER.md](docs/TINY_TELEPROMPTER.md).
 
 ### Asimov stick lessons
 

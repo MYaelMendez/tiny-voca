@@ -13,7 +13,7 @@ metadata:
 
 # tiny-voca-voice Skill
 
-`tiny-voca-voice` is a first-class Hermes plugin with five registered tools.
+`tiny-voca-voice` is a first-class Hermes plugin with six registered tools.
 It speaks English locally through the tiny-voca ONNX model, writes 24 kHz mono
 WAV files, appends `HUMAN://ROOT` hash-chained receipts, and builds narrated
 Asimov stick lessons on the unmodified upstream stick-scene runtime.
@@ -45,20 +45,22 @@ It does not train voices, clone voices, stream audio, or read non-English text.
 ## How to Run
 
 Prefer the registered tools: `tts_speak`, `tts_voices`, `tts_receipts`,
-`tts_verify`, and `tts_stick_lesson`. All paths below are repo-relative or
-environment-based; never hardcode a machine-local directory.
+`tts_verify`, `tts_stick_lesson`, and `tts_teleprompt`. All paths below are
+repo-relative or environment-based; never hardcode a machine-local directory.
 
 - `terminal(command="python3 scripts/tiny_voca_voice.py --text-file in.txt --output out.wav --voice M2")`
 - `terminal(command="python3 scripts/asimov_stick_lesson.py --op list")`
 - `terminal(command="python3 scripts/asimov_stick_lesson.py --op build --lesson all --out out/")`
+- `terminal(command="python3 scripts/tiny_teleprompter.py --op build --script sovereignty --out teleprompter/")`
 - `terminal(command="python3 scripts/tiny_voca_verify.py")`
 - `terminal(command="hermes config set tts.provider tiny-voca")`
 - `read_file(path="docs/VOICE_COMPUTE_MAP.md")` — voice identity map.
 - `read_file(path="site/index.html")` — beautiful project page.
 - `read_file(path="docs/ASIMOV_STICK_LESSONS.md")` — lesson contract.
+- `read_file(path="docs/TINY_TELEPROMPTER.md")` — teleprompter contract.
 - Voices: `F2` (`nous-girl`) and `M2` (`hermes-agent`); aliases are normalized.
 - Identity: `F2 → human-intent`, `M2 → agent-runtime`, `ROBOT → robot-body`.
-- Receipts: `TTS://SPEAK` and `LESSON://BUILD`, authority `HUMAN://ROOT`.
+- Receipts: `TTS://SPEAK`, `LESSON://BUILD`, `PROMPT://BUILD`; authority `HUMAN://ROOT`.
 
 ## Quick Reference
 
@@ -69,6 +71,9 @@ environment-based; never hardcode a machine-local directory.
 - `tts_stick_lesson({op:"list"})` — list the three Asimov lessons.
 - `tts_stick_lesson({op:"build", lesson:"all", out:"..."})` — build the page,
   copy the unchanged upstream runtime, synthesize narration, and receipt it.
+- `tts_teleprompt({op:"list"})` — list teleprompter scripts.
+- `tts_teleprompt({op:"build", script:"sovereignty", out:"..."})` — build a
+  narrated 9:16 command glass with `PROMPT://BUILD`.
 - Desktop dock: `desktop/plugin.js` + `dashboard/plugin_api.py`; enable
   **tinyVOCA Voice Dock** in Capabilities → Plugins, then use the right pane.
 - Lesson IDs: `asimov-authority`, `asimov-verbs`, `asimov-twin`, `all`.
