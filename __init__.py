@@ -1,4 +1,4 @@
-"""tiny-voca-voice 1.1.0 — self-hosted English TTS plus Asimov stick lessons.
+"""tiny-voca-voice 1.2.0 — self-hosted English TTS plus Asimov stick lessons.
 
 The plugin registers five light tools and delegates synthesis, verification,
 and lesson building to portable scripts. All paths resolve from $HERMES_HOME;
@@ -12,6 +12,7 @@ SCRIPTS = ROOT / "scripts"
 CLI = SCRIPTS / "tiny_voca_voice.py"
 VERIFY = SCRIPTS / "tiny_voca_verify.py"
 STICK = SCRIPTS / "asimov_stick_lesson.py"
+IDENTITY = ROOT / "identity.json"
 PY = os.environ.get("HERMES_TINY_VOCA_PYTHON") or shutil.which("python3") or sys.executable
 HERMES_HOME = Path(os.environ.get("HERMES_HOME", Path.home() / ".hermes"))
 LEDGER = Path(os.environ.get("HERMES_TINY_VOCA_LEDGER", HERMES_HOME / "tiny-voca-receipts.jsonl"))
@@ -59,6 +60,15 @@ def _run(script, args):
         return {"success": False, "error": f"{type(exc).__name__}: {exc}"}
 
 
+def _identity():
+    if not IDENTITY.exists():
+        return {"success": False, "error": "identity.json missing"}
+    try:
+        return json.loads(IDENTITY.read_text(encoding="utf-8"))
+    except Exception as exc:
+        return {"success": False, "error": f"identity.json invalid: {exc}"}
+
+
 def register(ctx):
     def tts_speak(args: dict) -> str:
         text = args.get("text", "")
@@ -76,8 +86,11 @@ def register(ctx):
     def tts_voices(args: dict) -> str:
         runtime = HERMES_HOME / "tiny-voca"
         model = runtime / "onnx" / "model.onnx"
-        return _out({"success": True, "authority": "HUMAN://ROOT", "version": "1.1.0",
-                     "voices": VOICES, "model": "tiny-voca",
+        identity = _identity()
+        return _out({"success": True, "authority": "HUMAN://ROOT", "version": "1.2.0",
+                     "voices": VOICES, "identity": identity,
+                     "compute_layers": identity.get("compute_layers", {}),
+                     "model": "tiny-voca",
                      "parameters": 4537291, "sample_rate": 24000,
                      "backend": "ONNX Runtime CPU",
                      "runtime": str(runtime), "model_present": model.exists(),

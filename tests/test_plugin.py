@@ -58,6 +58,15 @@ class TinyVocaPluginTests(unittest.TestCase):
         self.assertIn("nous-girl", out["voices"][0]["aliases"])
         self.assertIn("hermes-agent", out["voices"][1]["aliases"])
 
+    def test_voices_exposes_identity_and_compute_layers(self):
+        out = json.loads(self.ctx.tools["tts_voices"][0]({}))
+        layers = out["identity"]["bindings"]
+        self.assertEqual(out["version"], "1.2.0")
+        self.assertEqual(layers["F2"]["compute_layer"], "human-intent")
+        self.assertEqual(layers["M2"]["compute_layer"], "agent-runtime")
+        self.assertEqual(layers["ROBOT"]["compute_layer"], "robot-body")
+        self.assertEqual(layers["ROBOT"]["source_voice"], "F2")
+
     def test_receipts_empty_ledger(self):
         out = json.loads(self.ctx.tools["tts_receipts"][0]({"limit": 5}))
         self.assertTrue(out["success"])

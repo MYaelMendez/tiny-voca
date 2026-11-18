@@ -1,6 +1,6 @@
 name: tiny-voca-voice
-version: 1.1.0
-description: Self-hosted English TTS with hash-chained receipts and narrated Asimov stick lessons.
+version: 1.2.0
+description: Self-hosted English TTS with voice identity, hash-chained receipts, and narrated Asimov stick lessons.
 author: Yæl Méndez (@yaelmendez)
 license: Apache-2.0
 provides_tools:

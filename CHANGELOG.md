@@ -4,6 +4,26 @@ All notable changes to `tiny-voca-voice` are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and versions follow
 [Semantic Versioning](https://semver.org/).
 
+## [1.2.0] - 2026-11-18
+
+### Added
+
+- Machine-readable `identity.json` binding voices to principals and compute
+  layers: `F2/nous girl → human-intent`, `M2/hermes-agent → agent-runtime`,
+  `ROBOT/asimov-robot → robot-body`.
+- `tts_voices({})` now returns `identity` and `compute_layers`, so Hermes-agent
+  users can query the mapping from inside a session.
+- `docs/VOICE_COMPUTE_MAP.md` explaining the three compute layers and the
+  F2-derived robot voice path through robotVOICE to the Menlo Asimov speaker.
+- Generated Asimov lesson bundles now embed the identity map in `lesson.json`
+  and display the voice→layer map on the lesson page.
+
+### Changed
+
+- Version bumped to 1.2.0 across manifest, metadata, plugin, skill, installer,
+  acceptance, README, and changelog.
+- `install.sh` copies `identity.json`.
+
 ## [1.1.0] - 2026-11-18
 
 ### Added
@@ -56,5 +76,6 @@ All notable changes to `tiny-voca-voice` are documented here. Format follows
 - Weights are not vendored; download and verify them before first use.
 - Upstream: `n4ze3m/tiny-voca` and `n4ze3m/dizione` (both Apache-2.0).
 
+[1.2.0]: https://github.com/MYaelMendez/tiny-voca/releases/tag/v1.2.0
 [1.1.0]: https://github.com/MYaelMendez/tiny-voca/releases/tag/v1.1.0
 [1.0.0]: https://github.com/n4ze3m/tiny-voca/releases/tag/v1.0.0

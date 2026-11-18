@@ -1,9 +1,10 @@
 # Asimov Robot Stick Lessons
 
-`tiny-voca-voice` 1.1.0 ships a first-class Hermes capability for narrated
+`tiny-voca-voice` 1.2.0 ships a first-class Hermes capability for narrated
 OpenSourceWare education. It packages the upstream [nilbuild/stick-scene](https://github.com/nilbuild/stick-scene)
 runtime unchanged, adds three Asimov scenes, synthesizes English narration with
-tiny-voca, and writes a `LESSON://BUILD` receipt.
+tiny-voca, and writes a `LESSON://BUILD` receipt. The generated page displays
+the voice → compute-layer map from `identity.json`.
 
 ## Tool
 

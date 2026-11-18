@@ -1,0 +1,54 @@
+{
+  "schema": "tiny-voca-voice-identity/1",
+  "version": "1.2.0",
+  "authority": "HUMAN://ROOT",
+  "chain": "HUMAN://ROOT → æ → RECEIPT",
+  "principle": "The human is root. Voices are instruments, not principals. The robot is an executor, never an authority source.",
+  "bindings": {
+    "F2": {
+      "id": "F2",
+      "name": "nous girl",
+      "aliases": ["F2", "f2", "nous-girl", "nous_girl", "nous girl"],
+      "role": "root voice",
+      "principal": "HUMAN://ROOT",
+      "compute_layer": "human-intent",
+      "runtime": "tiny-voca ONNX / CPU",
+      "sample_rate_hz": 24000,
+      "authority": "source of human intent; does not sign",
+      "use": "root questions, human intent, and the source timbre for robot voice output"
+    },
+    "M2": {
+      "id": "M2",
+      "name": "hermes-agent",
+      "aliases": ["M2", "m2", "hermes-agent", "hermes_agent", "hermes agent"],
+      "role": "build voice",
+      "principal": "agent",
+      "compute_layer": "agent-runtime",
+      "runtime": "tiny-voca ONNX / CPU",
+      "sample_rate_hz": 24000,
+      "authority": "executor only; asks before acting",
+      "use": "narration, build logs, and agent speech"
+    },
+    "ROBOT": {
+      "id": "ROBOT",
+      "name": "asimov-robot",
+      "aliases": ["robotVOICE", "robot-voice", "robot voice", "asimov", "asimov-robot"],
+      "role": "robot body voice",
+      "principal": "robot",
+      "source_voice": "F2",
+      "compute_layer": "robot-body",
+      "runtime": "robotVOICE → menlo.asimov.Robot.speaker.play_pcm",
+      "sample_rate_hz": 44100,
+      "resample_from_hz": 24000,
+      "authority": "executor only; never an authority root",
+      "use": "Asimov face tablet, speaker output, and robot face-state videos"
+    }
+  },
+  "compute_layers": {
+    "human-intent": "F2 / nous girl — HUMAN://ROOT intent, local tiny-voca CPU",
+    "agent-runtime": "M2 / hermes-agent — agent execution, local tiny-voca CPU",
+    "robot-body": "ROBOT / asimov-robot — F2 source resampled for Menlo Asimov speaker"
+  },
+  "receipt_actions": ["TTS://SPEAK", "LESSON://BUILD"],
+  "note": "Alias resolution is case-insensitive and normalizes '-' and '_' to spaces. Identity does not transfer authority."
+}

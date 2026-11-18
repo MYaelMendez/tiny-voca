@@ -38,6 +38,11 @@ def main():
 
         voices = json.loads(ctx.tools["tts_voices"][0]({}))
         assert voices["success"] and [v["name"] for v in voices["voices"]] == ["nous-girl", "hermes-agent"]
+        assert voices["version"] == "1.2.0"
+        assert voices["identity"]["bindings"]["ROBOT"]["compute_layer"] == "robot-body"
+        assert voices["identity"]["bindings"]["F2"]["compute_layer"] == "human-intent"
+        assert voices["identity"]["bindings"]["M2"]["compute_layer"] == "agent-runtime"
+        assert set(voices["compute_layers"]) == {"human-intent", "agent-runtime", "robot-body"}
         receipts = json.loads(ctx.tools["tts_receipts"][0]({"limit": 3}))
         assert receipts["success"] and receipts["count"] == 0
 
@@ -60,9 +65,9 @@ def main():
                     offenders.append(str(p.relative_to(ROOT)))
         assert not offenders, offenders
 
-    print(json.dumps({"success": True, "tools": sorted(ctx.tools), "version": "1.1.0",
+    print(json.dumps({"success": True, "tools": sorted(ctx.tools), "version": "1.2.0",
                       "authority": "HUMAN://ROOT", "portable": True,
-                      "stick_lessons": 3}))
+                      "stick_lessons": 3, "compute_layers": 3}))
 
 
 if __name__ == "__main__":

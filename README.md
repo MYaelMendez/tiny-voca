@@ -6,10 +6,12 @@
 ONNX model as a first-class Hermes provider. It runs entirely on CPU: no API
 key, no cloud call, no PyTorch. Weights are downloaded once and SHA-256 verified.
 Every spoken line is recorded as a `HUMAN://ROOT` hash-chained `TTS://SPEAK` receipt.
-Version 1.1.0 adds `tts_stick_lesson`, which builds narrated Asimov robot stick
-lessons on the unchanged upstream stick-scene runtime.
+Version 1.1.0 added `tts_stick_lesson`, which builds narrated Asimov robot stick
+lessons on the unchanged upstream stick-scene runtime. Version 1.2.0 adds
+`identity.json`, a machine-readable voice → principal → compute-layer map that
+`tts_voices({})` exposes to Hermes-agent users.
 
-- **Version:** 1.1.0
+- **Version:** 1.2.0
 - **Runtime root:** `$TINY_VOCA_HOME`, falling back to `$HERMES_HOME/tiny-voca`
 - **Plugin destination:** `$HERMES_HOME/plugins/tiny-voca-voice`
 - **Provider name:** `tiny-voca` (enable with `hermes config set tts.provider tiny-voca`)
@@ -18,6 +20,8 @@ lessons on the unchanged upstream stick-scene runtime.
 
 | Path | Purpose |
 |---|---|
+| `plugin.yaml` | Manifest: five tools and this plugin version |
+| `identity.json` | Voice → principal → compute-layer identity map |
 | `scripts/tiny_voca_voice.py` | Provider CLI: `--text-file` in, WAV out, JSON on the last stdout line |
 | `scripts/tiny_voca_paths.py` | Stdlib-only path, alias, and receipt-chain helpers |
 | `scripts/tiny_voca_verify.py` | Validate the receipt hash chain; prints one JSON line |
@@ -26,6 +30,7 @@ lessons on the unchanged upstream stick-scene runtime.
 | `__init__.py` | Registers the five `tts_*` tools and the skill |
 | `skills/tiny-voca-voice/SKILL.md` | Hermes skill that teaches an agent to use the tools |
 | `docs/NATIVE_TTS.md` | Native provider config, weights provisioning, troubleshooting |
+| `docs/VOICE_COMPUTE_MAP.md` | Voice identity, principal, and compute-layer mapping |
 | `docs/ASIMOV_STICK_LESSONS.md` | Stick-lesson contract, output layout, and authority model |
 | `install.sh` | Copies the plugin into `$HERMES_HOME/plugins/tiny-voca-voice` |
 | `.github/workflows/test.yml` | CI: `py_compile` + `unittest` only |
@@ -180,6 +185,19 @@ writes `lesson.json`, and appends one `LESSON://BUILD` receipt. See
 Alias resolution is case-insensitive and normalizes `-` and `_` to spaces.
 `F2` is the root/question voice; `M2` is the build/narration voice and the
 default for the native provider.
+
+### Voice identity and compute layers
+
+Identity is not just an alias. `identity.json` binds each voice to a principal
+and a compute layer; `tts_voices({})` returns the same map to Hermes users.
+
+| Identity | Compute layer | Meaning |
+|---|---|---|
+| `F2` · nous girl | `human-intent` | Root voice, `HUMAN://ROOT`; also the source timbre for the robot voice |
+| `M2` · hermes-agent | `agent-runtime` | Build/narration voice; agent executes, never signs |
+| `ROBOT` · asimov-robot | `robot-body` | F2 source resampled for the Menlo Asimov speaker via robotVOICE |
+
+See [docs/VOICE_COMPUTE_MAP.md](docs/VOICE_COMPUTE_MAP.md).
 
 ## Receipts
 

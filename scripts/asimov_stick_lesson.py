@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import tiny_voca_paths as paths  # noqa: E402
 
 ASSETS = ROOT / "assets" / "stick-scene"
+IDENTITY = ROOT / "identity.json"
 SPEAK = ROOT / "scripts" / "tiny_voca_voice.py"
 PY = os.environ.get("HERMES_TINY_VOCA_PYTHON") or shutil.which("python3") or sys.executable
 DEFAULT_SPEED = 1.25
@@ -143,6 +144,7 @@ def _html(lesson_ids, cards):
 .wrap{max-width:960px;margin:0 auto;padding:24px 20px 56px}header{padding:36px 0 22px;border-bottom:1px solid var(--line)}
 h1{margin:0;color:#eafff5;font-size:clamp(1.8rem,5vw,3rem)}.lede{color:#9fd8c0;max-width:70ch}
 .chain{display:inline-block;margin-top:12px;padding:7px 12px;border:1px solid rgba(212,175,55,.5);color:var(--gold);font-size:13px}
+.voicemap{margin-top:10px;color:var(--muted);font-size:12px}
 figure{margin:18px 0;background:var(--paper);border:1px solid #d8ddd8;border-radius:12px;padding:16px 18px;color:#141414}
 .tag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#6f817c;margin-bottom:8px}
 stick-scene{display:block;width:100%;height:230px;background:white;border-radius:8px;cursor:pointer;background-image:radial-gradient(#e6e6e6 1px,transparent 1.2px);background-size:14px 14px}
@@ -152,7 +154,8 @@ a{color:var(--cyan)}
 </style></head><body><div class="wrap">
 <header><h1>&gt;_æ: ASIMOV STICK LESSONS</h1>
 <p class="lede">Local, self-hosted narration over the upstream stick-scene runtime. Three lessons: command, governed verbs, and the USD twin.</p>
-<div class="chain">HUMAN://ROOT → æ → RECEIPT</div></header>
+<div class="chain">HUMAN://ROOT → æ → RECEIPT</div>
+<div class="voicemap">F2 · nous girl → human intent &nbsp;|&nbsp; M2 · hermes-agent → agent runtime &nbsp;|&nbsp; ROBOT · asimov-robot → robot body</div></header>
 <main>""" + "".join(parts) + """</main>
 <footer>Built on <a href="https://github.com/nilbuild/stick-scene">nilbuild/stick-scene</a>, MIT © Kamran Ahmed. Runtime copied unchanged. Narration by tiny-voca with hash-chained receipts. Independent build; no institutional endorsement claimed.</footer>
 </div>
@@ -198,6 +201,7 @@ def build(lesson: str, out: Path, speed: float):
         "authority": "HUMAN://ROOT",
         "product": "tiny-voca-voice",
         "capability": "asimov-robot-stick-lessons",
+        "identity": json.loads(IDENTITY.read_text(encoding="utf-8")) if IDENTITY.exists() else None,
         "lesson": lesson or "all",
         "lessons": lesson_ids,
         "speed": speed,

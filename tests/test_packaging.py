@@ -1,4 +1,5 @@
 """Stdlib-only packaging checks; no network, weights, or heavy imports."""
+import json
 import re
 import unittest
 from pathlib import Path
@@ -29,6 +30,14 @@ class PackagingTest(unittest.TestCase):
         for section in ("When to Use", "Prerequisites", "How to Run",
                         "Quick Reference", "Procedure", "Pitfalls", "Verification"):
             self.assertIn(f"## {section}", content, f"missing section {section}")
+
+    def test_identity_map_is_shipped(self):
+        identity = json.loads((ROOT / "identity.json").read_text(encoding="utf-8"))
+        self.assertEqual(identity["authority"], "HUMAN://ROOT")
+        self.assertEqual(set(identity["compute_layers"]),
+                         {"human-intent", "agent-runtime", "robot-body"})
+        install = (ROOT / "install.sh").read_text(encoding="utf-8")
+        self.assertIn("identity.json", install)
 
     def test_stick_lesson_assets_and_skill(self):
         assets = ROOT / "assets" / "stick-scene"

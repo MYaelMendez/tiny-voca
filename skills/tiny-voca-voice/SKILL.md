@@ -1,7 +1,7 @@
 ---
 name: tiny-voca-voice
 description: Speak English locally and build narrated Asimov lessons.
-version: "1.1.0"
+version: "1.2.0"
 author: Yæl Méndez (@yaelmendez), Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
@@ -52,14 +52,16 @@ environment-based; never hardcode a machine-local directory.
 - `terminal(command="python3 scripts/asimov_stick_lesson.py --op build --lesson all --out out/")`
 - `terminal(command="python3 scripts/tiny_voca_verify.py")`
 - `terminal(command="hermes config set tts.provider tiny-voca")`
+- `read_file(path="docs/VOICE_COMPUTE_MAP.md")` — voice identity map.
 - `read_file(path="docs/ASIMOV_STICK_LESSONS.md")` — lesson contract.
 - Voices: `F2` (`nous-girl`) and `M2` (`hermes-agent`); aliases are normalized.
+- Identity: `F2 → human-intent`, `M2 → agent-runtime`, `ROBOT → robot-body`.
 - Receipts: `TTS://SPEAK` and `LESSON://BUILD`, authority `HUMAN://ROOT`.
 
 ## Quick Reference
 
 - `tts_speak({text, voice, output, speed})` — synthesize one utterance.
-- `tts_voices({})` — list canonical voices, aliases, and runtime status.
+- `tts_voices({})` — list voices, aliases, identity bindings, and runtime status.
 - `tts_receipts({limit})` — read the recent hash-chained ledger entries.
 - `tts_verify({})` — validate every receipt link and content hash.
 - `tts_stick_lesson({op:"list"})` — list the three Asimov lessons.
