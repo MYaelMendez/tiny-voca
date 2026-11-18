@@ -44,7 +44,7 @@ class TinyVocaPluginTests(unittest.TestCase):
 
     def test_registers_seven_tools_and_skill(self):
         self.assertEqual(set(self.ctx.tools), {"tts_speak", "tts_voices", "tts_receipts",
-                                               "tts_verify", "tts_stick_lesson", "tts_teleprompt", "tts_voice"})
+                                               "tts_verify", "tts_stick_lesson", "tts_teleprompt", "tts_voice", "tts_lab"})
         self.assertIn("tiny-voca-voice", self.ctx.skills)
         self.assertTrue(self.ctx.skills["tiny-voca-voice"].exists())
 
@@ -61,7 +61,7 @@ class TinyVocaPluginTests(unittest.TestCase):
     def test_voices_exposes_identity_and_compute_layers(self):
         out = json.loads(self.ctx.tools["tts_voices"][0]({}))
         layers = out["identity"]["bindings"]
-        self.assertEqual(out["version"], "1.2.0")
+        self.assertEqual(out["version"], "1.3.0")
         self.assertEqual(layers["F2"]["compute_layer"], "human-intent")
         self.assertEqual(layers["M2"]["compute_layer"], "agent-runtime")
         self.assertEqual(layers["ROBOT"]["compute_layer"], "robot-body")
@@ -85,6 +85,13 @@ class TinyVocaPluginTests(unittest.TestCase):
         self.assertTrue(out["success"])
         self.assertEqual([s["id"] for s in out["scripts"]],
                          ["sovereignty", "asimov-voice-map"])
+
+    def test_voice_lab_card(self):
+        out = json.loads(self.ctx.tools["tts_lab"][0]({"op": "card"}))
+        self.assertTrue(out["success"])
+        self.assertEqual(out["voice"], "SOVÆREIGN")
+        self.assertIn("VOICE://BIND", out["governance"])
+        self.assertIn("chinese-one-person-company.json", out["ad_script"] or "")
 
     def test_voice_list(self):
         out = json.loads(self.ctx.tools["tts_voice"][0]({"op": "list"}))

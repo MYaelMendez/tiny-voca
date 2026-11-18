@@ -1,7 +1,7 @@
 ---
 name: tiny-voca-voice
 description: Speak English locally and build narrated Asimov lessons.
-version: "1.2.0"
+version: "1.3.0"
 author: Yæl Méndez (@yaelmendez), Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]
@@ -45,7 +45,7 @@ It does not train voices, clone voices, stream audio, or read non-English text.
 ## How to Run
 
 Prefer the registered tools: `tts_speak`, `tts_voices`, `tts_receipts`,
-`tts_verify`, `tts_stick_lesson`, `tts_teleprompt`, and `tts_voice`. All paths below are
+`tts_verify`, `tts_stick_lesson`, `tts_teleprompt`, `tts_voice`, and `tts_lab`. All paths below are
 repo-relative or environment-based; never hardcode a machine-local directory.
 
 - `terminal(command="python3 scripts/tiny_voca_voice.py --text-file in.txt --output out.wav --voice M2")`
@@ -59,6 +59,7 @@ repo-relative or environment-based; never hardcode a machine-local directory.
 - `read_file(path="docs/ASIMOV_STICK_LESSONS.md")` — lesson contract.
 - `read_file(path="docs/TINY_TELEPROMPTER.md")` — teleprompter contract.
 - `read_file(path="docs/TINY_VOICE.md")` — tinyVOICE provider and twin governance.
+- `read_file(path="docs/VOICE_LAB.md")` — SOVÆREIGN binding and Chinese ad workflow.
 - Voices: `F2` (`nous-girl`) and `M2` (`hermes-agent`); aliases are normalized.
 - Identity: `F2 → human-intent`, `M2 → agent-runtime`, `ROBOT → robot-body`, `SOVÆREIGN → human-twin`.
 - Receipts: `TTS://SPEAK`, `LESSON://BUILD`, `PROMPT://BUILD`; authority `HUMAN://ROOT`.
@@ -76,6 +77,7 @@ repo-relative or environment-based; never hardcode a machine-local directory.
 - `tts_teleprompt({op:"build", script:"sovereignty", out:"..."})` — build a
   narrated 9:16 command glass with `PROMPT://BUILD`.
 - `tts_voice({op:"list"})` — list tinyVOICE providers and identity bindings.
+- `tts_lab({op:"card"})` — inspect the consent-gated SOVÆREIGN voice lab.
 - Desktop dock: `desktop/plugin.js` + `dashboard/plugin_api.py`; enable
   **tinyVOCA Voice Dock** in Capabilities → Plugins, then use the right pane.
 - Lesson IDs: `asimov-authority`, `asimov-verbs`, `asimov-twin`, `all`.

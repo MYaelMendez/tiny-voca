@@ -1,3 +1,12 @@
+## [1.3.0] - 2026-11-18
+
+### Added
+
+- Voice Lab: `tts_lab` tool with `card`, `bind`, `provision`, and `ad` ops.
+- Consent-gated `SOVÆREIGN` binding with `VOICE://BIND` receipts.
+- Chinese one-person-company ad script and VoxMel render plan.
+- `docs/VOICE_LAB.md` with the full clone/ad governance workflow.
+
 # Changelog
 
 All notable changes to `tiny-voca-voice` are documented here. Format follows
@@ -116,3 +125,4 @@ All notable changes to `tiny-voca-voice` are documented here. Format follows
 [1.2.0]: https://github.com/MYaelMendez/tiny-voca/releases/tag/v1.2.0
 [1.1.0]: https://github.com/MYaelMendez/tiny-voca/releases/tag/v1.1.0
 [1.0.0]: https://github.com/n4ze3m/tiny-voca/releases/tag/v1.0.0
+[1.3.0]: https://github.com/MYaelMendez/tiny-voca/releases/tag/v1.3.0

@@ -47,6 +47,15 @@ class PackagingTest(unittest.TestCase):
         self.assertIn("tts_teleprompt", (ROOT / "plugin.yaml").read_text(encoding="utf-8"))
         self.assertIn("docs/TINY_TELEPROMPTER.md", (ROOT / "README.md").read_text(encoding="utf-8"))
 
+    def test_voice_lab_is_shipped(self):
+        for rel in ("scripts/tiny_voice_lab.py", "docs/VOICE_LAB.md",
+                    "examples/tiny-voice/chinese-one-person-company.json"):
+            self.assertTrue((ROOT / rel).exists(), f"missing {rel}")
+        src = (ROOT / "scripts" / "tiny_voice_lab.py").read_text(encoding="utf-8")
+        for token in ("VOICE://BIND", "SOVÆREIGN", "VOXMEL_REPO", "ad"):
+            self.assertIn(token, src)
+        self.assertIn("tts_lab", (ROOT / "plugin.yaml").read_text(encoding="utf-8"))
+
     def test_go_tiny_starter_is_shipped(self):
         for rel in ("examples/tiny-voice/consent.template.txt",
                     "examples/tiny-voice/prompt_text.template.txt",

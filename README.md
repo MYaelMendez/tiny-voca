@@ -33,7 +33,7 @@ surface: a narrated 9:16 command glass with `PROMPT://BUILD` receipts.
 
 | Path | Purpose |
 |---|---|
-| `plugin.yaml` | Manifest: seven tools and this plugin version |
+| `plugin.yaml` | Manifest: eight tools and this plugin version |
 | `identity.json` | Voice → principal → compute-layer identity map |
 | `scripts/tiny_voca_voice.py` | Provider CLI: `--text-file` in, WAV out, JSON on the last stdout line |
 | `scripts/tiny_voca_paths.py` | Stdlib-only path, alias, and receipt-chain helpers |
@@ -58,6 +58,7 @@ surface: a narrated 9:16 command glass with `PROMPT://BUILD` receipts.
 | `docs/ASIMOV_STICK_LESSONS.md` | Stick-lesson contract, output layout, and authority model |
 | `docs/TINY_TELEPROMPTER.md` | Teleprompter contract, controls, and receipts |
 | `docs/TINY_VOICE.md` | tinyVOICE providers, Chinese voice, and digital-twin governance |
+| `docs/VOICE_LAB.md` | SOVÆREIGN binding and Chinese ad workflow |
 | `install.sh` | Copies the plugin into `$HERMES_HOME/plugins/tiny-voca-voice` |
 | `.github/workflows/test.yml` | CI: `py_compile` + `unittest` only |
 
@@ -202,7 +203,7 @@ Once enabled, the built-in `text_to_speech` tool and the `/voice on` and
 
 ## Plugin tools and aliases
 
-The plugin registers seven top-level tools:
+The plugin registers eight top-level tools:
 
 | Tool | Action |
 |---|---|
@@ -213,6 +214,7 @@ The plugin registers seven top-level tools:
 | `tts_stick_lesson` | List or build narrated Asimov stick lessons |
 | `tts_teleprompt` | List or build TTS-synced tinyTELEPROMPTER pages |
 | `tts_voice` | List tinyVOICE providers, bind a consented digital-twin voice, or synthesize |
+| `tts_lab` | Consent-gated SOVÆREIGN voice lab and Chinese one-person-company ad prep |
 
 Example calls:
 
@@ -224,6 +226,7 @@ tts_stick_lesson({"op": "build", "lesson": "all", "out": "/path/to/bundle"})
 tts_teleprompt({"op": "list"})
 tts_teleprompt({"op": "build", "script": "sovereignty", "out": "/path/to/teleprompter"})
 tts_voice({"op": "list"})
+tts_lab({"op": "card"})
 tts_receipts({"limit": 10})
 tts_verify({})
 ```

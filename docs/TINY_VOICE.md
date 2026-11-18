@@ -75,6 +75,11 @@ No weights are vendored. The adapter refuses to run if any required path is
 missing. `examples/tiny-voice/` contains consent, transcript, and Chinese script
 templates.
 
+## Voice Lab
+
+Use the consent-gated Voice Lab to bind a human-approved clone to `SOVÆREIGN`
+and prepare the Chinese one-person-company ad. See `docs/VOICE_LAB.md`.
+
 ## Upstream
 
 VoxMel: https://github.com/MYaelMendez/Vox — Apache-2.0. Thank you to VoxDance

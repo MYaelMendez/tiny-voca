@@ -18,7 +18,7 @@ from fastapi import APIRouter, HTTPException
 ROOT = Path(__file__).resolve().parents[1]
 IDENTITY = ROOT / "identity.json"
 CLI = ROOT / "scripts" / "tiny_voca_voice.py"
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 router = APIRouter()
 
 

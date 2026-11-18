@@ -1,4 +1,4 @@
-"""tiny-voca-voice 1.2.0 — self-hosted English TTS plus Asimov stick lessons.
+"""tiny-voca-voice 1.3.0 — self-hosted English TTS plus Asimov stick lessons.
 
 The plugin registers seven light tools and delegates synthesis, verification,
 lesson, teleprompter, and provider routing to portable scripts. All paths resolve
@@ -14,6 +14,7 @@ VERIFY = SCRIPTS / "tiny_voca_verify.py"
 STICK = SCRIPTS / "asimov_stick_lesson.py"
 TELEPROMPTER = SCRIPTS / "tiny_teleprompter.py"
 VOICE = SCRIPTS / "tiny_voice.py"
+LAB = SCRIPTS / "tiny_voice_lab.py"
 IDENTITY = ROOT / "identity.json"
 PY = os.environ.get("HERMES_TINY_VOCA_PYTHON") or shutil.which("python3") or sys.executable
 HERMES_HOME = Path(os.environ.get("HERMES_HOME", Path.home() / ".hermes"))
@@ -89,7 +90,7 @@ def register(ctx):
         runtime = HERMES_HOME / "tiny-voca"
         model = runtime / "onnx" / "model.onnx"
         identity = _identity()
-        return _out({"success": True, "authority": "HUMAN://ROOT", "version": "1.2.0",
+        return _out({"success": True, "authority": "HUMAN://ROOT", "version": "1.3.0",
                      "voices": VOICES, "identity": identity,
                      "compute_layers": identity.get("compute_layers", {}),
                      "model": "tiny-voca",
@@ -133,6 +134,16 @@ def register(ctx):
         if args.get("speed") is not None:
             cmd += ["--speed", str(args["speed"])]
         return _out(_run(TELEPROMPTER, cmd))
+
+    def tts_lab(args: dict) -> str:
+        cmd = ["--op", str(args.get("op", "card"))]
+        for key, flag in (("reference", "--reference"), ("transcript", "--transcript"),
+                          ("consent", "--consent"), ("out", "--out")):
+            if args.get(key) is not None:
+                cmd += [flag, str(args[key])]
+        if args.get("build_audio"):
+            cmd.append("--build-audio")
+        return _out(_run(LAB, cmd))
 
     def tts_voice(args: dict) -> str:
         cmd = ["--op", str(args.get("op", "list"))]
@@ -207,6 +218,18 @@ def register(ctx):
         }, "required": ["op"]},
     )
 
+    ctx.register_tool(
+        name="tts_lab", toolset="tiny-voca-voice", handler=tts_lab,
+        schema={"type": "object", "properties": {
+            "op": {"type": "string", "enum": ["card", "bind", "provision", "ad"],
+                   "description": "Inspect, bind, provision, or build the Chinese ad."},
+            "reference": {"type": "string", "description": "Clean voice reference WAV."},
+            "transcript": {"type": "string", "description": "Exact transcript of the reference WAV."},
+            "consent": {"type": "string", "description": "Explicit HUMAN://ROOT consent file."},
+            "out": {"type": "string", "description": "Ad output directory."},
+            "build_audio": {"type": "boolean", "description": "Synthesize narration with VoxMel."},
+        }, "required": ["op"]},
+    )
     skill = ROOT / "skills" / "tiny-voca-voice" / "SKILL.md"
     if skill.exists():
         ctx.register_skill("tiny-voca-voice", skill)

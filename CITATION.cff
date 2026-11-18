@@ -1,4 +1,4 @@
-cff-version: 1.2.0
+cff-version: 1.3.0
 message: "If you use tiny-voca-voice, please cite the upstream tiny-voca project and this Hermes integration."
 title: "tiny-voca-voice: Hermes-Agent local voice dock"
 version: 1.2.0
