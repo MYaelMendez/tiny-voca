@@ -1,3 +1,12 @@
+## [1.3.1] - 2026-11-18
+
+### Changed
+
+- `SOVÆREIGN` default timbre set to the **broadcast** signal-derived variant
+  from the bound human reference; low and bright remain alternates.
+- VoxMel router now uses the bound voice card for default prompt audio and
+  transcript when `VOXMEL_PROMPT_AUDIO` / `VOXMEL_PROMPT_TEXT` are unset.
+
 ## [1.3.0] - 2026-11-18
 
 ### Added
@@ -126,3 +135,4 @@ All notable changes to `tiny-voca-voice` are documented here. Format follows
 [1.1.0]: https://github.com/MYaelMendez/tiny-voca/releases/tag/v1.1.0
 [1.0.0]: https://github.com/n4ze3m/tiny-voca/releases/tag/v1.0.0
 [1.3.0]: https://github.com/MYaelMendez/tiny-voca/releases/tag/v1.3.0
+[1.3.1]: https://github.com/MYaelMendez/tiny-voca/releases/tag/v1.3.1

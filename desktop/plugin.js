@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { jsx, jsxs } from 'react/jsx-runtime'
 
 const ID = 'tiny-voca-voice'
-const VERSION = '1.3.0'
+const VERSION = '1.3.1'
 const VOICE_COLORS = { F2: 'var(--ui-accent)', M2: 'var(--ui-text-secondary)', ROBOT: 'var(--ui-text-tertiary)', 'SOVÆREIGN': 'var(--ui-accent)' }
 
 function useIdentity(ctx) {

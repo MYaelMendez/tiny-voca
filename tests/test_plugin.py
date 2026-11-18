@@ -61,7 +61,7 @@ class TinyVocaPluginTests(unittest.TestCase):
     def test_voices_exposes_identity_and_compute_layers(self):
         out = json.loads(self.ctx.tools["tts_voices"][0]({}))
         layers = out["identity"]["bindings"]
-        self.assertEqual(out["version"], "1.3.0")
+        self.assertEqual(out["version"], "1.3.1")
         self.assertEqual(layers["F2"]["compute_layer"], "human-intent")
         self.assertEqual(layers["M2"]["compute_layer"], "agent-runtime")
         self.assertEqual(layers["ROBOT"]["compute_layer"], "robot-body")

@@ -1,4 +1,4 @@
-"""tiny-voca-voice 1.3.0 — self-hosted English TTS plus Asimov stick lessons.
+"""tiny-voca-voice 1.3.1 — self-hosted English TTS plus Asimov stick lessons.
 
 The plugin registers seven light tools and delegates synthesis, verification,
 lesson, teleprompter, and provider routing to portable scripts. All paths resolve
@@ -90,7 +90,7 @@ def register(ctx):
         runtime = HERMES_HOME / "tiny-voca"
         model = runtime / "onnx" / "model.onnx"
         identity = _identity()
-        return _out({"success": True, "authority": "HUMAN://ROOT", "version": "1.3.0",
+        return _out({"success": True, "authority": "HUMAN://ROOT", "version": "1.3.1",
                      "voices": VOICES, "identity": identity,
                      "compute_layers": identity.get("compute_layers", {}),
                      "model": "tiny-voca",

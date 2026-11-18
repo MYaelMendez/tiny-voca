@@ -89,6 +89,12 @@ The ad says, in Chinese:
 
 > One person can still run a company. Use open source software to keep authority in your own hands. The human is root; agents only execute. Every action leaves a receipt. Download tinyVOCA and hermes-ae and begin your Internet of Agents. Authority is not transferable. Receipts are public.
 
+## Default timbre
+
+After binding, three signal-derived variants are available: `low`, `bright`,
+and `broadcast`. **Broadcast** is the digital-twin default. Low and bright are
+alternates. The VoxMel router reads the default from the local voice card.
+
 ## Governance
 
 The clone is a digital twin, not the root. It never signs. It speaks only inside the bound scope, and every generated line is receipted.

@@ -1,7 +1,7 @@
 ---
 name: tiny-voca-voice
 description: Speak English locally and build narrated Asimov lessons.
-version: "1.3.0"
+version: "1.3.1"
 author: Yæl Méndez (@yaelmendez), Hermes Agent
 license: MIT
 platforms: [linux, macos, windows]

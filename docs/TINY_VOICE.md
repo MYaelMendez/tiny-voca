@@ -75,6 +75,13 @@ No weights are vendored. The adapter refuses to run if any required path is
 missing. `examples/tiny-voice/` contains consent, transcript, and Chinese script
 templates.
 
+## Default timbre
+
+The bound `SOVÆREIGN` reference has three signal-derived timbre variants. The
+default for the human digital twin is **broadcast** — warm, compressed, and
+clear for public narration. `low` and `bright` remain alternates. This is a
+timbre selection over the bound reference, not a VoxMel-generated clone.
+
 ## Voice Lab
 
 Use the consent-gated Voice Lab to bind a human-approved clone to `SOVÆREIGN`

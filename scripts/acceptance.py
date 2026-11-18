@@ -38,7 +38,7 @@ def main():
 
         voices = json.loads(ctx.tools["tts_voices"][0]({}))
         assert voices["success"] and [v["name"] for v in voices["voices"]] == ["nous-girl", "hermes-agent"]
-        assert voices["version"] == "1.3.0"
+        assert voices["version"] == "1.3.1"
         assert voices["identity"]["bindings"]["ROBOT"]["compute_layer"] == "robot-body"
         assert voices["identity"]["bindings"]["F2"]["compute_layer"] == "human-intent"
         assert voices["identity"]["bindings"]["M2"]["compute_layer"] == "agent-runtime"
@@ -76,7 +76,7 @@ def main():
                     offenders.append(str(p.relative_to(ROOT)))
         assert not offenders, offenders
 
-    print(json.dumps({"success": True, "tools": sorted(ctx.tools), "version": "1.3.0",
+    print(json.dumps({"success": True, "tools": sorted(ctx.tools), "version": "1.3.1",
                       "authority": "HUMAN://ROOT", "portable": True,
                       "stick_lessons": 3, "compute_layers": 4}))
 

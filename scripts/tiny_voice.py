@@ -42,6 +42,10 @@ def _sha(p: Path) -> str:
 def _identity() -> dict:
     return json.loads(IDENTITY.read_text(encoding="utf-8"))
 
+def _voice_card() -> dict:
+    p = paths.hermes_home() / "tiny-voice-lab" / "voice-card.json"
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+
 
 def _voice_id(value: str, identity: dict) -> str:
     raw = str(value or "").strip().lower().replace("_", " ").replace("-", " ")
@@ -149,10 +153,15 @@ def _voxmel_cmd(args, output: Path):
         raise RuntimeError("VOXMEL_VOCOS_DIR missing or not found")
     if not tokenizer or not Path(tokenizer).exists():
         raise RuntimeError("VOXMEL_TOKENIZER_PATH missing or not found")
-    prompt_audio = os.environ.get("VOXMEL_PROMPT_AUDIO")
-    prompt_text = os.environ.get("VOXMEL_PROMPT_TEXT")
+    card = _voice_card()
+    prompt_audio = os.environ.get("VOXMEL_PROMPT_AUDIO") or card.get("default_prompt_audio")
+    prompt_text = os.environ.get("VOXMEL_PROMPT_TEXT") or card.get("transcript")
     if not prompt_audio or not prompt_text:
         raise RuntimeError("VOXMEL_PROMPT_AUDIO and VOXMEL_PROMPT_TEXT required for cloning")
+    if not Path(prompt_audio).exists():
+        raise RuntimeError(f"prompt audio not found: {prompt_audio}")
+    if not Path(prompt_text).exists():
+        raise RuntimeError(f"prompt transcript not found: {prompt_text}")
     py = os.environ.get("VOXMEL_PYTHON") or PY
     cmd = [py, "-m", "voxcore.cli", "--model", model,
            "--tokenizer-path", tokenizer, "--vocos-path", vocos,

@@ -47,6 +47,13 @@ class PackagingTest(unittest.TestCase):
         self.assertIn("tts_teleprompt", (ROOT / "plugin.yaml").read_text(encoding="utf-8"))
         self.assertIn("docs/TINY_TELEPROMPTER.md", (ROOT / "README.md").read_text(encoding="utf-8"))
 
+    def test_default_timbre_is_bound(self):
+        ident = json.loads((ROOT / "identity.json").read_text(encoding="utf-8"))
+        b = ident["bindings"]["SOVÆREIGN"]
+        self.assertEqual(b["default_timbre"], "broadcast")
+        self.assertEqual([v["id"] for v in b["timbre_variants"]], ["low", "bright", "broadcast"])
+        self.assertTrue(b["bind_receipt"])
+
     def test_voice_lab_is_shipped(self):
         for rel in ("scripts/tiny_voice_lab.py", "docs/VOICE_LAB.md",
                     "examples/tiny-voice/chinese-one-person-company.json"):
