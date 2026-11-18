@@ -1,8 +1,17 @@
 # Third-Party Notices
 
+> **Thank you to the original [tiny-voca](https://github.com/n4ze3m/tiny-voca)
+> project and its authors.** This integration exists because you released the
+> model and weights openly. Thank you also to
+> [dizione](https://github.com/n4ze3m/dizione) for the phonemizer and
+> [nilbuild/stick-scene](https://github.com/nilbuild/stick-scene) for the canvas
+> runtime. We built the governance layer; you built the source.
+>
+> #opensourceware #internetofagents
+
 `tiny-voca-voice` is a packaging and integration layer. It does not contain the
 weights or the phonemizer implementation; those are upstream works used at
-runtime under their own licenses.
+runtime under their own licenses. See [docs/ATTRIBUTION.md](docs/ATTRIBUTION.md).
 
 ## Apache-2.0 upstreams
 

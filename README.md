@@ -1,11 +1,23 @@
-# tiny-voca-voice
+# Hermes-Agent://tinyVOCA
 
-**Local, self-hosted English TTS for Hermes Agent — one CLI, five tools, narrated Asimov lessons, one receipted ledger.**
+> Local voices. Named compute layers. Receipted authority.
+
+**`tiny-voca-voice` — first-class Hermes Agent package · CPU only · 24 kHz · Apache-2.0 · Hermes ≥0.22.2**
+
+[Beautiful project page](site/index.html) · [Install in Hermes](hermes://plugin/install?repo=MYaelMendez/tiny-voca&enable=1) · [1:1 film](assets/hermes-agent-tinyvoca-repo-1x1.mp4) · [Attribution](docs/ATTRIBUTION.md)
 
 `tiny-voca-voice` packages the [tiny-voca](https://huggingface.co/n4ze3m/tiny-voca)
-ONNX model as a first-class Hermes provider. It runs entirely on CPU: no API
-key, no cloud call, no PyTorch. Weights are downloaded once and SHA-256 verified.
-Every spoken line is recorded as a `HUMAN://ROOT` hash-chained `TTS://SPEAK` receipt.
+ONNX model as a first-class Hermes provider and Desktop dock. It runs entirely
+on CPU: no API key, no cloud call, no PyTorch. Weights are downloaded once and
+SHA-256 verified. Every spoken line is recorded as a `HUMAN://ROOT` hash-chained
+`TTS://SPEAK` receipt.
+
+> **Thank you to the original tiny-voca project and its authors.** This package
+> stands on their source, along with [dizione](https://github.com/n4ze3m/dizione)
+> and [nilbuild/stick-scene](https://github.com/nilbuild/stick-scene). We built
+> the authority, receipts, identity map, and Hermes surfaces on top of their
+> work. #opensourceware #internetofagents
+
 Version 1.1.0 added `tts_stick_lesson`, which builds narrated Asimov robot stick
 lessons on the unchanged upstream stick-scene runtime. Version 1.2.0 adds
 `identity.json`, a machine-readable voice → principal → compute-layer map that
@@ -32,6 +44,10 @@ lessons on the unchanged upstream stick-scene runtime. Version 1.2.0 adds
 | `desktop/plugin.js` | Hermes Desktop half: docked pane, statusbar chip, palette command |
 | `dashboard/manifest.json` + `dashboard/plugin_api.py` | Scoped `/api/plugins/tiny-voca-voice/` backend |
 | `package.json` | Node check/test scripts for the desktop half |
+| `site/index.html` | Beautiful self-contained project page |
+| `assets/brand/` | SVG master and 1080×1080 logo |
+| `docs/ATTRIBUTION.md` | Human-readable upstream thanks |
+| `CITATION.cff` | Citation metadata with upstream preferred citation |
 | `assets/hermes-agent-tinyvoca-repo-1x1.mp4` | 1:1 repo explainer film |
 | `docs/REPO_VIDEO.md` | Repo film spec, timeline, and receipt |
 | `docs/NATIVE_TTS.md` | Native provider config, weights provisioning, troubleshooting |
@@ -48,6 +64,14 @@ lessons on the unchanged upstream stick-scene runtime. Version 1.2.0 adds
 - Hermes Agent with plugin loading and native TTS support.
 
 No credentials, tokens, or network access are needed at speech time.
+
+## Project page
+
+A beautiful, self-contained landing page lives at [`site/index.html`](site/index.html).
+Hosted preview: https://htmlpreview.github.io/?https://raw.githubusercontent.com/MYaelMendez/tiny-voca/main/site/index.html
+
+It includes the 1:1 film, the voice→compute map, an availability table, the
+install link, and the upstream attribution.
 
 ## Install
 
@@ -268,3 +292,11 @@ licenses — see [NOTICE.md](NOTICE.md):
 
 `HUMAN://ROOT` is an attribution marker for the receipt ledger, not a software
 license.
+
+## Thanks
+
+Thank you again to the original [tiny-voca](https://github.com/n4ze3m/tiny-voca)
+authors for the source that made this development possible. See
+[docs/ATTRIBUTION.md](docs/ATTRIBUTION.md) for the full credit.
+
+#opensourceware #internetofagents

@@ -39,12 +39,26 @@ class PackagingTest(unittest.TestCase):
         install = (ROOT / "install.sh").read_text(encoding="utf-8")
         self.assertIn("identity.json", install)
 
+    def test_first_class_repo_beauty_and_attribution(self):
+        for rel in ("site/index.html", "assets/brand/hermes-agent-tinyvoca-logo.svg",
+                    "assets/brand/hermes-agent-tinyvoca-logo-1080.png",
+                    "docs/ATTRIBUTION.md", "CITATION.cff"):
+            self.assertTrue((ROOT / rel).exists(), f"missing repo asset {rel}")
+        notice = (ROOT / "NOTICE.md").read_text(encoding="utf-8")
+        self.assertIn("Thank you to the original", notice)
+        self.assertIn("#opensourceware #internetofagents", notice)
+        site = (ROOT / "site" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("HUMAN://ROOT → æ → RECEIPT", site)
+        self.assertIn("#opensourceware #internetofagents", site)
+        install = (ROOT / "install.sh").read_text(encoding="utf-8")
+        self.assertIn("site package.json CITATION.cff", install)
+
     def test_desktop_dock_is_shipped(self):
         for rel in ("desktop/plugin.js", "dashboard/manifest.json",
                     "dashboard/plugin_api.py", "package.json"):
             self.assertTrue((ROOT / rel).exists(), f"missing desktop asset {rel}")
         install = (ROOT / "install.sh").read_text(encoding="utf-8")
-        self.assertIn("desktop dashboard package.json", install)
+        self.assertIn("desktop dashboard site package.json CITATION.cff", install)
         self.assertIn("requires_hermes", (ROOT / "plugin.yaml").read_text(encoding="utf-8"))
 
     def test_stick_lesson_assets_and_skill(self):

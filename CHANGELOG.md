@@ -8,6 +8,13 @@ All notable changes to `tiny-voca-voice` are documented here. Format follows
 
 ### Added
 
+- Beautiful self-contained project page at `site/index.html`, with availability
+  table, 1:1 film, install link, and upstream attribution.
+- Brand assets: SVG master and 1080×1080 logo under `assets/brand/`.
+- `docs/ATTRIBUTION.md` with explicit thanks to original tiny-voca, dizione,
+  and stick-scene authors. #opensourceware #internetofagents
+- `CITATION.cff` with upstream preferred citation.
+- CI now runs desktop plugin checks alongside Python tests.
 - Unified Hermes Desktop half: `desktop/plugin.js` docks a tinyVOCA pane beside
   the conversation with a statusbar chip and palette command.
 - Scoped backend `dashboard/plugin_api.py` with `/status`, `/identity`, and

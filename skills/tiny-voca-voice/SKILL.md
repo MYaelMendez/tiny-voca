@@ -54,6 +54,7 @@ environment-based; never hardcode a machine-local directory.
 - `terminal(command="python3 scripts/tiny_voca_verify.py")`
 - `terminal(command="hermes config set tts.provider tiny-voca")`
 - `read_file(path="docs/VOICE_COMPUTE_MAP.md")` — voice identity map.
+- `read_file(path="site/index.html")` — beautiful project page.
 - `read_file(path="docs/ASIMOV_STICK_LESSONS.md")` — lesson contract.
 - Voices: `F2` (`nous-girl`) and `M2` (`hermes-agent`); aliases are normalized.
 - Identity: `F2 → human-intent`, `M2 → agent-runtime`, `ROBOT → robot-body`.
