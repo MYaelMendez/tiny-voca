@@ -1,8 +1,8 @@
-"""tiny-voca-voice 1.0.0 — self-hosted English TTS for Hermes agents.
+"""tiny-voca-voice 1.1.0 — self-hosted English TTS plus Asimov stick lessons.
 
-The plugin registers four light tools and delegates synthesis/verification to
-portable scripts. All paths resolve from $HERMES_HOME; no machine-local roots.
-The CLI writes the canonical hash-chained TTS://SPEAK receipt.
+The plugin registers five light tools and delegates synthesis, verification,
+and lesson building to portable scripts. All paths resolve from $HERMES_HOME;
+no machine-local roots. The CLI writes the canonical hash-chained receipts.
 """
 import json, os, shutil, subprocess, sys
 from pathlib import Path
@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parent
 SCRIPTS = ROOT / "scripts"
 CLI = SCRIPTS / "tiny_voca_voice.py"
 VERIFY = SCRIPTS / "tiny_voca_verify.py"
+STICK = SCRIPTS / "asimov_stick_lesson.py"
 PY = os.environ.get("HERMES_TINY_VOCA_PYTHON") or shutil.which("python3") or sys.executable
 HERMES_HOME = Path(os.environ.get("HERMES_HOME", Path.home() / ".hermes"))
 LEDGER = Path(os.environ.get("HERMES_TINY_VOCA_LEDGER", HERMES_HOME / "tiny-voca-receipts.jsonl"))
@@ -75,7 +76,7 @@ def register(ctx):
     def tts_voices(args: dict) -> str:
         runtime = HERMES_HOME / "tiny-voca"
         model = runtime / "onnx" / "model.onnx"
-        return _out({"success": True, "authority": "HUMAN://ROOT",
+        return _out({"success": True, "authority": "HUMAN://ROOT", "version": "1.1.0",
                      "voices": VOICES, "model": "tiny-voca",
                      "parameters": 4537291, "sample_rate": 24000,
                      "backend": "ONNX Runtime CPU",
@@ -96,6 +97,17 @@ def register(ctx):
 
     def tts_verify(args: dict) -> str:
         return _out(_run(VERIFY, []))
+
+    def tts_stick_lesson(args: dict) -> str:
+        op = args.get("op", "list")
+        cmd = ["--op", str(op)]
+        if args.get("lesson"):
+            cmd += ["--lesson", str(args["lesson"])]
+        if args.get("out"):
+            cmd += ["--out", str(args["out"])]
+        if args.get("speed") is not None:
+            cmd += ["--speed", str(args["speed"])]
+        return _out(_run(STICK, cmd))
 
     ctx.register_tool(
         name="tts_speak", toolset="tiny-voca-voice", handler=tts_speak,
@@ -120,6 +132,17 @@ def register(ctx):
     ctx.register_tool(
         name="tts_verify", toolset="tiny-voca-voice", handler=tts_verify,
         schema={"type": "object", "properties": {}},
+    )
+    ctx.register_tool(
+        name="tts_stick_lesson", toolset="tiny-voca-voice", handler=tts_stick_lesson,
+        schema={"type": "object", "properties": {
+            "op": {"type": "string", "enum": ["list", "build"],
+                   "description": "List lessons or build a narrated lesson bundle."},
+            "lesson": {"type": "string",
+                       "description": "asimov-authority, asimov-verbs, asimov-twin, or all."},
+            "out": {"type": "string", "description": "Output directory for build."},
+            "speed": {"type": "number", "description": "Narration speed. Default 1.25."},
+        }, "required": ["op"]},
     )
 
     skill = ROOT / "skills" / "tiny-voca-voice" / "SKILL.md"

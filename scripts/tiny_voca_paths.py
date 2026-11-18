@@ -15,6 +15,7 @@ from pathlib import Path
 GENESIS = "0" * 64
 AUTHORITY = "HUMAN://ROOT"
 ACTION_TTS_SPEAK = "TTS://SPEAK"
+ACTION_LESSON_BUILD = "LESSON://BUILD"
 SAMPLE_RATE = 24000
 
 _F2_ALIASES = ("F2", "nous-girl", "nous_girl", "nous girl")
@@ -152,6 +153,24 @@ def append_receipt(result: dict, voice: str, alias: str, path=None) -> dict:
     with ledger.open("a", encoding="utf-8") as handle:
         handle.write(json.dumps(receipt, ensure_ascii=False) + "\n")
     return receipt
+
+
+def append_custom_receipt(body: dict, path=None) -> dict:
+    """Append an arbitrary receipt body to the same hash-chained ledger.
+
+    The caller supplies action-specific fields; this helper adds the authority,
+    timestamp, prev link, and hash. Verification treats every entry alike.
+    """
+    ledger = Path(path) if path is not None else ledger_path()
+    record = dict(body)
+    record.setdefault("ts", _now())
+    record.setdefault("authority", AUTHORITY)
+    record["prev"] = last_hash(ledger)
+    record["hash"] = compute_hash(record["prev"], record)
+    ledger.parent.mkdir(parents=True, exist_ok=True)
+    with ledger.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(record, ensure_ascii=False) + "\n")
+    return record
 
 
 def verify_chain(path=None) -> dict:

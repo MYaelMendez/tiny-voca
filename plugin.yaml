@@ -1,6 +1,6 @@
 name: tiny-voca-voice
-version: 1.0.0
-description: Self-hosted English TTS for Hermes agents with two named voices and hash-chained receipts.
+version: 1.1.0
+description: Self-hosted English TTS with hash-chained receipts and narrated Asimov stick lessons.
 author: Yæl Méndez (@yaelmendez)
 license: Apache-2.0
 provides_tools:
@@ -8,4 +8,5 @@ provides_tools:
   - tts_voices
   - tts_receipts
   - tts_verify
+  - tts_stick_lesson
 provides_hooks: []

@@ -34,12 +34,16 @@ def main():
         spec.loader.exec_module(mod)
         ctx = FakeCtx()
         mod.register(ctx)
-        assert sorted(ctx.tools) == ["tts_receipts", "tts_speak", "tts_verify", "tts_voices"], sorted(ctx.tools)
+        assert sorted(ctx.tools) == ["tts_receipts", "tts_speak", "tts_stick_lesson", "tts_verify", "tts_voices"], sorted(ctx.tools)
 
         voices = json.loads(ctx.tools["tts_voices"][0]({}))
         assert voices["success"] and [v["name"] for v in voices["voices"]] == ["nous-girl", "hermes-agent"]
         receipts = json.loads(ctx.tools["tts_receipts"][0]({"limit": 3}))
         assert receipts["success"] and receipts["count"] == 0
+
+        lessons = json.loads(ctx.tools["tts_stick_lesson"][0]({"op": "list"}))
+        assert lessons["success"] and [x["id"] for x in lessons["lessons"]] == [
+            "asimov-authority", "asimov-verbs", "asimov-twin"], lessons
 
         for p in ROOT.rglob("*.py"):
             if any(part in {".git", "__pycache__"} for part in p.parts):
@@ -56,8 +60,9 @@ def main():
                     offenders.append(str(p.relative_to(ROOT)))
         assert not offenders, offenders
 
-    print(json.dumps({"success": True, "tools": sorted(ctx.tools), "version": "1.0.0",
-                      "authority": "HUMAN://ROOT", "portable": True}))
+    print(json.dumps({"success": True, "tools": sorted(ctx.tools), "version": "1.1.0",
+                      "authority": "HUMAN://ROOT", "portable": True,
+                      "stick_lessons": 3}))
 
 
 if __name__ == "__main__":

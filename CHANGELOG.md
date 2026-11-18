@@ -4,6 +4,30 @@ All notable changes to `tiny-voca-voice` are documented here. Format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and versions follow
 [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] - 2026-11-18
+
+### Added
+
+- `tts_stick_lesson` — a fifth registered Hermes tool that lists or builds
+  narrated Asimov robot stick lessons.
+- `scripts/asimov_stick_lesson.py` — stdlib orchestrator that copies the
+  unchanged upstream stick-scene runtime, writes a self-contained lesson page,
+  synthesizes tiny-voca narration, and records one `LESSON://BUILD` receipt.
+- `assets/stick-scene/` — upstream MIT runtime, license, and three Asimov
+  scenes: authority command, governed verbs, and USD twin.
+- `docs/ASIMOV_STICK_LESSONS.md` — lesson contract, output layout, receipt
+  model, and authority statement.
+- `append_custom_receipt()` in `scripts/tiny_voca_paths.py` so `LESSON://BUILD`
+  joins the same hash chain as `TTS://SPEAK` without double receipting.
+- Packaging, plugin, and acceptance tests for the fifth tool and assets.
+
+### Changed
+
+- Version bumped to 1.1.0 across manifest, package metadata, plugin version,
+  skill frontmatter, installer, acceptance, and changelog.
+- README and skill updated to present the plugin as a first-class Hermes
+  capability with TTS and Asimov education surfaces.
+
 ## [1.0.0] - 2026-11-17
 
 ### Added
@@ -32,4 +56,5 @@ All notable changes to `tiny-voca-voice` are documented here. Format follows
 - Weights are not vendored; download and verify them before first use.
 - Upstream: `n4ze3m/tiny-voca` and `n4ze3m/dizione` (both Apache-2.0).
 
+[1.1.0]: https://github.com/MYaelMendez/tiny-voca/releases/tag/v1.1.0
 [1.0.0]: https://github.com/n4ze3m/tiny-voca/releases/tag/v1.0.0

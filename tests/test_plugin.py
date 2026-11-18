@@ -42,8 +42,9 @@ class TinyVocaPluginTests(unittest.TestCase):
     def tearDown(self):
         self.tmp.cleanup()
 
-    def test_registers_four_tools_and_skill(self):
-        self.assertEqual(set(self.ctx.tools), {"tts_speak", "tts_voices", "tts_receipts", "tts_verify"})
+    def test_registers_five_tools_and_skill(self):
+        self.assertEqual(set(self.ctx.tools), {"tts_speak", "tts_voices", "tts_receipts",
+                                               "tts_verify", "tts_stick_lesson"})
         self.assertIn("tiny-voca-voice", self.ctx.skills)
         self.assertTrue(self.ctx.skills["tiny-voca-voice"].exists())
 
@@ -62,6 +63,13 @@ class TinyVocaPluginTests(unittest.TestCase):
         self.assertTrue(out["success"])
         self.assertEqual(out["count"], 0)
         self.assertEqual(out["receipts"], [])
+
+    def test_stick_lesson_list(self):
+        out = json.loads(self.ctx.tools["tts_stick_lesson"][0]({"op": "list"}))
+        self.assertTrue(out["success"])
+        ids = [x["id"] for x in out["lessons"]]
+        self.assertEqual(ids, ["asimov-authority", "asimov-verbs", "asimov-twin"])
+        self.assertTrue(all(x["lines"] > 0 for x in out["lessons"]))
 
     def test_speak_requires_text_or_file(self):
         out = json.loads(self.ctx.tools["tts_speak"][0]({}))

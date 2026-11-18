@@ -10,6 +10,8 @@ phonemizer/
 *.flac
 *.ogg
 *.mp4
+lesson-out/
+bundles/
 
 # Python bytecode and build artifacts
 __pycache__/

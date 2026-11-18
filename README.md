@@ -1,13 +1,15 @@
 # tiny-voca-voice
 
-**Local, self-hosted English TTS for Hermes Agent — one CLI, four tools, one receipted ledger.**
+**Local, self-hosted English TTS for Hermes Agent — one CLI, five tools, narrated Asimov lessons, one receipted ledger.**
 
 `tiny-voca-voice` packages the [tiny-voca](https://huggingface.co/n4ze3m/tiny-voca)
-ONNX model as a first-class Hermes TTS provider. It runs entirely on CPU: no API
+ONNX model as a first-class Hermes provider. It runs entirely on CPU: no API
 key, no cloud call, no PyTorch. Weights are downloaded once and SHA-256 verified.
 Every spoken line is recorded as a `HUMAN://ROOT` hash-chained `TTS://SPEAK` receipt.
+Version 1.1.0 adds `tts_stick_lesson`, which builds narrated Asimov robot stick
+lessons on the unchanged upstream stick-scene runtime.
 
-- **Version:** 1.0.0
+- **Version:** 1.1.0
 - **Runtime root:** `$TINY_VOCA_HOME`, falling back to `$HERMES_HOME/tiny-voca`
 - **Plugin destination:** `$HERMES_HOME/plugins/tiny-voca-voice`
 - **Provider name:** `tiny-voca` (enable with `hermes config set tts.provider tiny-voca`)
@@ -19,9 +21,12 @@ Every spoken line is recorded as a `HUMAN://ROOT` hash-chained `TTS://SPEAK` rec
 | `scripts/tiny_voca_voice.py` | Provider CLI: `--text-file` in, WAV out, JSON on the last stdout line |
 | `scripts/tiny_voca_paths.py` | Stdlib-only path, alias, and receipt-chain helpers |
 | `scripts/tiny_voca_verify.py` | Validate the receipt hash chain; prints one JSON line |
-| `__init__.py` | Registers the four `tts_*` tools and the skill |
+| `scripts/asimov_stick_lesson.py` | Build narrated Asimov stick lessons with a `LESSON://BUILD` receipt |
+| `assets/stick-scene/` | Unmodified upstream runtime, MIT license, and three Asimov scenes |
+| `__init__.py` | Registers the five `tts_*` tools and the skill |
 | `skills/tiny-voca-voice/SKILL.md` | Hermes skill that teaches an agent to use the tools |
 | `docs/NATIVE_TTS.md` | Native provider config, weights provisioning, troubleshooting |
+| `docs/ASIMOV_STICK_LESSONS.md` | Stick-lesson contract, output layout, and authority model |
 | `install.sh` | Copies the plugin into `$HERMES_HOME/plugins/tiny-voca-voice` |
 | `.github/workflows/test.yml` | CI: `py_compile` + `unittest` only |
 
@@ -133,26 +138,37 @@ Once enabled, the built-in `text_to_speech` tool and the `/voice on` and
 
 ## Plugin tools and aliases
 
-The plugin registers four top-level tools:
+The plugin registers five top-level tools:
 
 | Tool | Action |
 |---|---|
 | `tts_speak` | Synthesize text to WAV and append a `TTS://SPEAK` receipt |
 | `tts_voices` | List voices, aliases, and the expected model checksum |
-| `tts_receipts` | Read recent `TTS://SPEAK` entries from the ledger |
+| `tts_receipts` | Read recent ledger entries |
 | `tts_verify` | Validate the receipt hash chain |
+| `tts_stick_lesson` | List or build narrated Asimov stick lessons |
 
 Example calls:
 
 ```text
 tts_voices({})
 tts_speak({"text": "Receipts on every action.", "voice": "hermes-agent"})
+tts_stick_lesson({"op": "list"})
+tts_stick_lesson({"op": "build", "lesson": "all", "out": "/path/to/bundle"})
 tts_receipts({"limit": 10})
 tts_verify({})
 ```
 
 The parent Hermes repo's aggregate `ae` tool exposes the `speak` and `voices`
 shortcuts, which dispatch to `tts_speak` and `tts_voices` respectively.
+
+### Asimov stick lessons
+
+`tts_stick_lesson` builds a self-contained page with three lessons:
+authority command, governed robot verbs, and the USD twin. It copies the
+upstream runtime byte-for-byte, synthesizes English narration for each lesson,
+writes `lesson.json`, and appends one `LESSON://BUILD` receipt. See
+[docs/ASIMOV_STICK_LESSONS.md](docs/ASIMOV_STICK_LESSONS.md).
 
 ### Voice aliases
 
@@ -171,8 +187,9 @@ Every successful synthesis appends a `TTS://SPEAK` receipt to the JSONL ledger
 at `$HERMES_HOME/tiny-voca-receipts.jsonl` (override with
 `HERMES_TINY_VOCA_LEDGER`). Each entry records `ts`, `action`, `authority`,
 canonical `voice`, supplied `alias`, `success`, WAV `sha256`, `duration_s`,
-`output`, `prev`, and `hash`. The chain begins with `prev` equal to 64 zeroes;
-each hash is `sha256(prev || canonical_json(entry_without_hash))`.
+`output`, `prev`, and `hash`. A completed lesson bundle appends one
+`LESSON://BUILD` entry to the same chain. The chain begins with `prev` equal to
+64 zeroes; each hash is `sha256(prev || canonical_json(entry_without_hash))`.
 
 The CLI echoes the new `hash` in its `receipt` field and `tts_verify` validates
 every link and content hash. This is a local tamper-evident chain: verification
@@ -199,6 +216,7 @@ licenses — see [NOTICE.md](NOTICE.md):
 
 - [n4ze3m/tiny-voca](https://github.com/n4ze3m/tiny-voca) — Apache-2.0 (model/weights).
 - [n4ze3m/dizione](https://github.com/n4ze3m/dizione) — Apache-2.0 (phonemizer).
+- [nilbuild/stick-scene](https://github.com/nilbuild/stick-scene) — MIT (canvas runtime; copied unchanged under `assets/stick-scene/`).
 
 `HUMAN://ROOT` is an attribution marker for the receipt ledger, not a software
 license.

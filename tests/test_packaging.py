@@ -30,6 +30,15 @@ class PackagingTest(unittest.TestCase):
                         "Quick Reference", "Procedure", "Pitfalls", "Verification"):
             self.assertIn(f"## {section}", content, f"missing section {section}")
 
+    def test_stick_lesson_assets_and_skill(self):
+        assets = ROOT / "assets" / "stick-scene"
+        for rel in ("stick.js", "LICENSE", "scenes/asimov-authority.js",
+                    "scenes/asimov-verbs.js", "scenes/asimov-twin.js"):
+            self.assertTrue((assets / rel).exists(), f"missing asset {rel}")
+        skill = (ROOT / "skills" / "tiny-voca-voice" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("tts_stick_lesson", skill)
+        self.assertIn("Asimov stick lessons", skill)
+
     def test_install_prints_provider_command(self):
         install = (ROOT / "install.sh").read_text(encoding="utf-8")
         self.assertIn("hermes config set tts.provider tiny-voca", install)

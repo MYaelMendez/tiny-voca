@@ -16,7 +16,7 @@ mkdir -p "$TARGET"
 
 # Copy the plugin payload. The existence guard keeps the installer usable in a
 # docs-only checkout; when the full plugin is present, every item is copied.
-for item in plugin.yaml __init__.py scripts skills docs \
+for item in plugin.yaml __init__.py scripts skills docs assets \
             README.md CHANGELOG.md NOTICE.md LICENSE; do
     if [ -e "$SCRIPT_DIR/$item" ]; then
         cp -R "$SCRIPT_DIR/$item" "$TARGET/"
@@ -29,7 +29,7 @@ fi
 
 cat <<EOF
 
-tiny-voca-voice 1.0.0 installed to: $TARGET
+tiny-voca-voice 1.1.0 installed to: $TARGET
 
 Enable native TTS (run this command):
     hermes config set tts.provider tiny-voca

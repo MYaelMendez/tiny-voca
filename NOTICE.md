@@ -24,6 +24,14 @@ runtime under their own licenses.
 
 A copy of the Apache License, Version 2.0 text is provided in [LICENSE](LICENSE).
 
+## MIT upstream: nilbuild/stick-scene
+
+- **Source:** <https://github.com/nilbuild/stick-scene>
+- **Runtime:** `assets/stick-scene/stick.js`, copied unchanged.
+- **Scenes:** three Asimov lesson scenes authored in this repository.
+- **License:** MIT © Kamran Ahmed. The upstream LICENSE is copied into
+  `assets/stick-scene/LICENSE` and into every generated lesson bundle.
+
 ## Runtime dependencies (not vendored)
 
 Used at runtime but installed separately, each under its own license:
