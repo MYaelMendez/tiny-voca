@@ -6,7 +6,11 @@ A 1:1 explainer for `Hermes-Agent://tinyVOCA` 1.2.0, shipped with the repo.
 - Raw: https://raw.githubusercontent.com/MYaelMendez/tiny-voca/main/assets/hermes-agent-tinyvoca-repo-1x1.mp4
 - 1080×1080 · 24 fps · 25.000 s · 600 frames · H.264/AAC
 - Audio: mean −21.5 dB, peak −2.3 dB
-- SHA-256: `b0b043b154b854104d045f849c23555add73bf9ac8c32e6c4d23e19b1edd901c`
+- SHA-256: `a1663cd593125cfa9885a3e8529a8f499364c92bc7e9337c6e182925726fcf2a`
+
+This cut uses the upgraded identity figures: nous girl's hoodie/skirt/hair,
+Hermes' winged helmet and caduceus, and Asimov's CAD-derived visor, panels,
+antenna, chest plate, and joints.
 
 ## Timeline
 
@@ -28,4 +32,4 @@ an executor. Every layer ends at:
 HUMAN://ROOT → æ → RECEIPT
 ```
 
-Receipt: `VIDEO://TINYVOCA_REPO_1X1` `c649d45481ad`; unified ledger 314.
+Receipt: `VIDEO://TINYVOCA_REPO_1X1_V2` `3db089bf61ab`; unified ledger 315.

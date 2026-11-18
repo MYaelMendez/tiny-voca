@@ -8,9 +8,10 @@ All notable changes to `tiny-voca-voice` are documented here. Format follows
 
 ### Added
 
-- 1:1 repo explainer film at
-  `assets/hermes-agent-tinyvoca-repo-1x1.mp4`, with spec and receipt in
-  `docs/REPO_VIDEO.md`.
+- Upgraded the three Asimov stick lessons and repo film with identity-specific
+  figures: nous girl hoodie/skirt/hair, Hermes winged helmet/visor/caduceus,
+  and a CAD-derived Asimov with visor, side panels, antenna, chest plate, and
+  joints. Motion and frame QA clean.
 
 ## [1.2.0] - 2026-11-18
 
